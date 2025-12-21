@@ -4,340 +4,164 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>生成AI×クリエイティブ学習基準ポータル | 東洋美術学校 公式</title>
-  <meta name="description" content="東洋美術学校の生成AI利用ガイドライン。ChatGPT、Gemini、Grokを活用したイラスト・デザイン・映像制作の学習基準（レベル0〜3）を公開。AI時代に求められる『地力』と『活用力』を両立する日本屈指の教育環境を提供します。">
-  <meta name="keywords" content="東洋美術学校, AI イラスト 学び方, AI デザイン 活用, 生成AI 映像制作, ChatGPT クリエイティブ, クリエイター 専門学校, AIガイドライン">
+  <title>【学生専用】AIクリエイティブ・ガイドライン | 東洋美術学校</title>
+  <meta name="description" content="東洋美術学校の学生向けAI利用基準ポータル。イラスト・デザイン・映像制作におけるChatGPTやGemini等の活用ルールをレベル別に解説。">
   
-  <meta property="og:title" content="AIを使いこなすクリエイターへ | 東洋美術学校">
-  <meta property="og:description" content="AIイラスト、デザイン、映像。生成AIをクリエイティブに統合する日本基準のガイドライン。">
-  <meta property="og:type" content="website">
-
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Plus+Jakarta+Sans:wght@800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap');
     
     body { 
-      background-color: #050505; 
+      background-color: #0a0a0c; 
       font-family: 'Noto Sans JP', sans-serif; 
-      color: #ffffff; 
-      scroll-behavior: smooth;
-      -webkit-font-smoothing: antialiased;
+      color: #e2e8f0; 
+      line-height: 1.6;
     }
 
-    /* 視覚的エフェクト */
-    .glass-card { 
-      background: rgba(255, 255, 255, 0.02); 
-      backdrop-filter: blur(20px); 
-      border: 1px solid rgba(255, 255, 255, 0.1); 
-      border-radius: 32px; 
+    .glass {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
     }
-    
-    /* スライダー：直感的なUI */
-    input[type=range] { -webkit-appearance: none; background: rgba(255,255,255,0.1); height: 12px; border-radius: 6px; width: 100%; }
+
+    /* 学生が操作しやすいスライダー */
+    input[type=range] { -webkit-appearance: none; background: rgba(255,255,255,0.1); height: 8px; border-radius: 4px; width: 100%; }
     input[type=range]::-webkit-slider-thumb { 
-      -webkit-appearance: none; width: 32px; height: 32px; border-radius: 50%; background: #ffffff; 
-      cursor: pointer; border: 6px solid #3b82f6; box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-      transition: transform 0.2s ease;
+      -webkit-appearance: none; width: 28px; height: 28px; border-radius: 50%; background: #ffffff; 
+      cursor: pointer; border: 4px solid #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
     }
-    input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.1); }
 
-    /* 表のスタイル */
-    .ref-table th { font-size: 0.85rem; color: #94a3b8; padding: 18px; background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.1); }
-    .ref-table td { padding: 18px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem; }
-
-    #submit-btn.disabled { opacity: 0.1; pointer-events: none; filter: grayscale(1); }
-    .sns-link:hover { color: #3b82f6; transform: translateY(-2px); transition: all 0.3s; }
-
-    /* FAQ用のアニメーションと装飾 */
-    .faq-item:hover { border-color: rgba(59, 130, 246, 0.4); background: rgba(255, 255, 255, 0.04); }
+    .status-card { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+    #submit-btn.disabled { opacity: 0.2; pointer-events: none; filter: grayscale(1); }
   </style>
 
   <script>
     const CONFIG = {
-      0: { name: 'レベル 0', color: '#ff4d4d', title: 'AI利用禁止', desc: '自分の「目」と「手」だけで描く。クリエイターとしての圧倒的な地力を養うモード。', detail: '・AIツールの起動禁止\n・アイデア出しへの利用禁止\n・完全な手動制作（アナログ・デジタル）' },
-      1: { name: 'レベル 1', color: '#3b82f6', title: 'AI補助利用', desc: 'ChatGPTやGeminiを「軍師」として活用。構成案やアイデアをAIと対話し、思考を広げるモード。', detail: '・プロンプトによるアイデア出しOK\n・制作の効率化・相談OK\n・生成された画像の直接利用は不可' },
-      2: { name: 'レベル 2', color: '#6366f1', title: 'AI部分活用', desc: '背景や素材の一部に生成AIを統合。自分の表現意図に合わせてAIを制御・加工するモード。', detail: '・背景やテクスチャのAI生成利用OK\n・AI生成物を素材として加工利用OK\n・作品のオリジナリティを自力で保持すること' },
-      3: { name: 'レベル 3', color: '#a855f7', title: 'AI積極活用', desc: 'AIをメインツールとして活用。高度なディレクション能力と制御力を証明する、未来の制作モード。', detail: '・AI画像・動画生成の全面活用OK\n・出力を制御するディレクション能力を評価\n・コンセプト設計と修正能力の重視' }
+      0: { name: 'レベル 0', color: '#ef4444', title: 'AI利用禁止', desc: '自分の「技術力」を100%磨く時。', detail: '・AIツールの起動禁止\n・ネットの参考画像を見るのはOK\n・自分の手と目で完成させる' },
+      1: { name: 'レベル 1', color: '#3b82f6', title: 'AI補助利用', desc: 'AIを「アイデアの相談役」にする。', detail: '・ChatGPT等でのアイデア出しOK\n・構成案の相談OK\n・生成された画像の使用はNG' },
+      2: { name: 'レベル 2', color: '#6366f1', title: 'AI部分活用', desc: 'AIを「素材」として統合する。', detail: '・背景やテクスチャの生成OK\n・AI素材を自力で加工・修正する\n・作品の主体はあくまで自分の表現' },
+      3: { name: 'レベル 3', color: '#a855f7', title: 'AI積極活用', desc: 'AIを「メインツール」として操る。', detail: '・AI生成を全面的に使用OK\n・高度なディレクション（指示）を重視\n・コンセプトの強さを評価' }
     };
 
     function updateLevel(lv) {
       const conf = CONFIG[lv];
-      document.getElementById('status-badge').innerText = conf.name;
-      document.getElementById('status-badge').style.backgroundColor = conf.color;
-      document.getElementById('status-title').innerText = conf.title;
-      document.getElementById('status-title').style.color = conf.color;
-      document.getElementById('status-desc').innerText = conf.desc;
-      document.getElementById('status-detail').innerText = conf.detail;
-      document.getElementById('main-card').style.borderColor = conf.color;
-      document.getElementById('main-card').style.boxShadow = `0 0 60px ${conf.color}15`;
+      const badge = document.getElementById('lv-badge');
+      const title = document.getElementById('lv-title');
+      const desc = document.getElementById('lv-desc');
+      const detail = document.getElementById('lv-detail');
+      
+      badge.innerText = conf.name;
+      badge.style.backgroundColor = conf.color;
+      title.innerText = conf.title;
+      title.style.color = conf.color;
+      desc.innerText = conf.desc;
+      detail.innerText = conf.detail;
+      document.getElementById('status-container').style.borderColor = conf.color + '44';
     }
 
-    function checkValidation() {
+    function toggleSubmit() {
       const c1 = document.getElementById('check1').checked;
       const c2 = document.getElementById('check2').checked;
       document.getElementById('submit-btn').classList.toggle('disabled', !(c1 && c2));
     }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('level-slider').addEventListener('input', (e) => updateLevel(e.target.value));
-      updateLevel(0);
-    });
   </script>
 </head>
-<body>
+<body class="pb-20">
 
-  <header class="p-6 border-b border-white/5 bg-black/80 sticky top-0 z-50 backdrop-blur-lg flex flex-wrap justify-between items-center gap-4">
-    <div class="flex items-center gap-4">
-      <div class="bg-blue-600 text-white font-black px-3 py-1 text-[12px] rounded-sm">東洋美術学校</div>
-      <h1 class="text-sm font-bold tracking-widest uppercase">AI Creative Portal</h1>
+  <header class="p-5 flex justify-between items-center border-b border-white/5 sticky top-0 bg-black/50 backdrop-blur-md z-50">
+    <div class="flex items-center gap-3">
+      <span class="bg-blue-600 text-[10px] font-black px-2 py-0.5 rounded">東美</span>
+      <span class="text-xs font-bold tracking-tighter uppercase">Student Portal</span>
     </div>
-    <nav class="flex gap-6 text-[11px] font-bold text-slate-400">
-      <a href="#vision" class="hover:text-white transition-colors">学びの理念</a>
-      <a href="#reference" class="hover:text-white transition-colors">逆引き表</a>
-      <a href="#faq" class="hover:text-white transition-colors">よくある質問</a>
-      <a href="#submit" class="text-blue-500 font-black">制作報告</a>
-    </nav>
+    <a href="#faq" class="text-[11px] font-bold text-slate-400 hover:text-white transition-colors">困ったときは？</a>
   </header>
 
-  <main class="py-12 px-6 max-w-6xl mx-auto">
-    <section class="mb-24 text-center">
-      <div class="mb-16">
-        <h2 class="text-blue-500 text-[10px] font-black tracking-[0.6em] uppercase mb-4 italic">Next Generation Creator</h2>
-        <p class="text-3xl md:text-5xl font-black leading-tight mb-6">AIに使われるのではなく、<br>AIを使いこなす。その「地力」を磨く。</p>
-        <p class="text-slate-400 text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
-          東洋美術学校は、イラスト・デザイン・映像制作の現場で必須となる「AI活用能力」と、AIには代替できない「人間ならではの感性」を両立させる日本屈指の学習環境を定義します。
-        </p>
+  <main class="max-w-2xl mx-auto px-6 mt-10">
+    
+    <section class="mb-16">
+      <div class="text-center mb-8">
+        <h2 class="text-xs font-black text-blue-500 tracking-[0.3em] uppercase mb-2">Today's Mission</h2>
+        <p class="text-xl font-bold">今日の制作レベルを確認しよう</p>
       </div>
 
-      <div id="main-card" class="glass-card p-8 md:p-20 border-2 transition-all duration-700 shadow-2xl">
-        <p class="text-[10px] font-bold text-slate-500 tracking-[0.4em] mb-12 uppercase">Current Operation Mode</p>
-        <div class="flex flex-col items-center">
-          <div id="status-badge" class="px-8 py-2 rounded-full text-sm font-black text-white mb-10 shadow-lg">レベル 0</div>
-          <h2 id="status-title" class="text-6xl md:text-8xl font-black mb-10 tracking-tighter transition-all">AI利用禁止</h2>
-          <p id="status-desc" class="text-slate-200 text-lg md:text-2xl font-bold mb-10">自分の力だけで描く。クリエイターとしての原点を作るモード。</p>
-          <pre id="status-detail" class="text-slate-400 text-xs md:text-sm font-sans leading-relaxed text-left inline-block bg-white/5 p-8 rounded-2xl border border-white/5">・AIツールの起動禁止
-・完全な自力制作
-・基礎力の向上</pre>
-        </div>
-        <div class="mt-20 max-w-md mx-auto">
-          <input type="range" id="level-slider" min="0" max="3" value="0" step="1">
-          <div class="flex justify-between mt-6 text-[10px] font-black text-slate-600 uppercase tracking-widest">
-            <span>禁止 (0)</span><span>補助 (1)</span><span>部分 (2)</span><span>積極 (3)</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="vision" class="mb-32 grid md:grid-cols-3 gap-8">
-      <div class="p-10 glass-card border-l-4 border-blue-500">
-        <h3 class="font-black text-xl mb-4 text-white">イラスト × AI</h3>
-        <p class="text-sm text-slate-400 leading-relaxed font-medium">デッサン力があるからこそ、AIの出力を自在に修正・制御できる。本質的な画力と最新AI技術をセットで学びます。</p>
-      </div>
-      <div class="p-10 glass-card border-l-4 border-indigo-500">
-        <h3 class="font-black text-xl mb-4 text-white">デザイン × AI</h3>
-        <p class="text-sm text-slate-400 leading-relaxed font-medium">ChatGPTやGeminiを思考のパートナーに。コンセプト設計からビジュアル展開まで、プロレベルのAI活用を習得します。</p>
-      </div>
-      <div class="p-10 glass-card border-l-4 border-purple-500">
-        <h3 class="font-black text-xl mb-4 text-white">映像 × AI</h3>
-        <p class="text-sm text-slate-400 leading-relaxed font-medium">AIによる素材生成から編集の自動化まで。新しい映像表現の最前線を、国内屈指の設備でいち早く体感できます。</p>
-      </div>
-    </section>
-
-    <section id="reference" class="mb-32">
-      <div class="flex items-center gap-6 mb-12">
-        <h3 class="text-xl font-black italic tracking-wider">機能別・逆引き判定ガイド</h3>
-        <div class="h-px flex-1 bg-white/5"></div>
-      </div>
-      <div class="glass-card overflow-x-auto">
-        <table class="ref-table w-full text-left min-w-[650px]">
-          <thead>
-            <tr>
-              <th class="w-1/3 text-slate-400">アクション・ツール名</th>
-              <th class="w-1/6 text-center text-slate-400">レベル</th>
-              <th class="text-slate-400">判定基準とアドバイス</th>
-            </tr>
-          </thead>
-          <tbody class="text-slate-400 font-medium">
-            <tr>
-              <td><span class="text-white font-bold">ChatGPT / Grok:</span> 企画・構成の相談</td>
-              <td class="text-blue-500 font-black text-center italic text-xs">レベル 1</td>
-              <td>自分の考えを整理する「壁打ち相手」としての活用はOKです。</td>
-            </tr>
-            <tr>
-              <td><span class="text-white font-bold">Photoshop:</span> AI生成塗りつぶし</td>
-              <td class="text-indigo-500 font-black text-center italic text-xs">レベル 2</td>
-              <td>無いものをAIに描かせる行為は「素材制作」の活用となります。</td>
-            </tr>
-            <tr>
-              <td><span class="text-white font-bold">CLIP STUDIO:</span> 3Dデッサン人形</td>
-              <td class="text-red-500 font-black text-center italic text-xs">レベル 0</td>
-              <td>AI機能ではないため、利用禁止授業でも自由に使えます。</td>
-            </tr>
-            <tr>
-              <td><span class="text-white font-bold">各種生成AI:</span> テクスチャ等の生成</td>
-              <td class="text-indigo-500 font-black text-center italic text-xs">レベル 2</td>
-              <td>作品の一部に「素材」として組み込む場合はこのレベルです。</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section id="faq" class="mb-32">
-      <div class="flex items-center gap-6 mb-12">
-        <h3 class="text-xl font-black italic tracking-wider text-white">よくある質問</h3>
-        <div class="h-px flex-1 bg-white/5"></div>
-      </div>
-
-      <div class="max-w-4xl mx-auto space-y-8">
+      <div id="status-container" class="glass p-8 text-center status-card border-2">
+        <div id="lv-badge" class="inline-block px-4 py-1 rounded-full text-[10px] font-black mb-6 transition-colors duration-500" style="background-color: #ef4444;">レベル 0</div>
+        <h3 id="lv-title" class="text-5xl font-black mb-4 transition-colors duration-500" style="color: #ef4444;">AI利用禁止</h3>
+        <p id="lv-desc" class="text-slate-300 font-bold mb-8">自分の「技術力」を100%磨く時。</p>
         
-        <div class="glass-card faq-item overflow-hidden transition-all border border-white/10 shadow-lg">
-          <div class="p-8 bg-white/5 flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <p class="text-blue-500 font-black text-[10px] mb-2 uppercase tracking-widest">Question 01</p>
-              <h4 class="text-xl font-bold text-white">就活のポートフォリオにAI作品を載せてもいいですか？</h4>
-            </div>
-            <div class="text-blue-500 text-2xl hidden md:block">▲</div>
-          </div>
-          <div class="p-8 border-t border-white/5 bg-black/40">
-            <p class="text-slate-300 leading-loose text-[15px]">
-              <strong class="text-white font-bold underline decoration-blue-500 decoration-2 underline-offset-4">はい、可能ですが「明記」が必須条件です。</strong><br><br>
-              どの工程でAI（ChatGPT, Adobe Firefly, Midjourney等）を使用し、どこが自分の手仕事かを必ず注釈で記載してください。現在の業界では技術力だけでなく「情報の透明性」と「権利への誠実さ」がプロとして高く評価されます。
-            </p>
-          </div>
+        <div class="bg-black/30 p-5 rounded-xl text-left border border-white/5 mb-10">
+          <pre id="lv-detail" class="text-xs text-slate-400 font-sans whitespace-pre-line leading-relaxed">・AIツールの起動禁止
+・ネットの参考画像を見るのはOK
+・自分の手と目で完成させる</pre>
         </div>
 
-        <div class="glass-card faq-item overflow-hidden transition-all border border-white/10 shadow-lg">
-          <div class="p-8 bg-white/5 flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <p class="text-blue-500 font-black text-[10px] mb-2 uppercase tracking-widest">Question 02</p>
-              <h4 class="text-xl font-bold text-white">ChatGPTで書いたレポートをそのまま提出してもいい？</h4>
-            </div>
-            <div class="text-blue-500 text-2xl hidden md:block">▲</div>
-          </div>
-          <div class="p-8 border-t border-white/5 bg-black/40">
-            <p class="text-slate-300 leading-loose text-[15px]">
-              <strong class="text-red-400 font-bold underline decoration-red-400 decoration-2 underline-offset-4">絶対に避けてください。</strong><br><br>
-              生成AIの文章には「ハルシネーション（もっともらしい嘘）」が含まれるリスクがあります。AIの回答はあくまでアイデアのヒントや構成案の作成に留め、必ず自分の目で事実確認（ファクトチェック）を行い、自分の言葉で書き直してください。
-            </p>
-          </div>
+        <input type="range" min="0" max="3" value="0" step="1" oninput="updateLevel(this.value)" class="cursor-pointer">
+        <div class="flex justify-between mt-4 text-[10px] font-black text-slate-500 uppercase">
+          <span>禁止</span><span>補助</span><span>部分</span><span>積極</span>
         </div>
-
-        <div class="glass-card faq-item overflow-hidden transition-all border border-white/10 shadow-lg">
-          <div class="p-8 bg-white/5 flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <p class="text-blue-500 font-black text-[10px] mb-2 uppercase tracking-widest">Question 03</p>
-              <h4 class="text-xl font-bold text-white">外部のコンテストに応募する際、AIを使っても大丈夫？</h4>
-            </div>
-            <div class="text-blue-500 text-2xl hidden md:block">▲</div>
-          </div>
-          <div class="p-8 border-t border-white/5 bg-black/40">
-            <p class="text-slate-300 leading-loose text-[15px]">
-              <strong class="text-white font-bold underline decoration-blue-500 decoration-2 underline-offset-4">主催団体の規定が最優先されます。</strong><br><br>
-              学校のガイドラインでOKであっても、コンテスト独自のルール（AI全面禁止、あるいは使用プロンプトの開示義務など）がある場合はそれに従ってください。ルールに反すると受賞取り消し等の不利益を被る可能性があります。
-            </p>
-          </div>
-        </div>
-
-        <div class="glass-card faq-item overflow-hidden transition-all border border-white/10 shadow-lg">
-          <div class="p-8 bg-white/5 flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <p class="text-blue-500 font-black text-[10px] mb-2 uppercase tracking-widest">Question 04</p>
-              <h4 class="text-xl font-bold text-white">AIで生成した画像に「著作権」は発生しますか？</h4>
-            </div>
-            <div class="text-blue-500 text-2xl hidden md:block">▲</div>
-          </div>
-          <div class="p-8 border-t border-white/5 bg-black/40">
-            <p class="text-slate-300 leading-loose text-[15px]">
-              <strong class="text-white font-bold underline decoration-blue-500 decoration-2 underline-offset-4">現在の法制度では「指示だけ」の画像に権利は認められにくいです。</strong><br><br>
-              人間が創作的な寄与（自らの手による大幅な加筆・加工、構成の決定的な制御など）を加えて初めて、法的に保護される可能性があります。AI任せの作品は、将来的に自分の権利を主張できないリスクがあることを理解しましょう。
-            </p>
-          </div>
-        </div>
-
-        <div class="glass-card faq-item overflow-hidden transition-all border border-white/10 shadow-lg">
-          <div class="p-8 bg-white/5 flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <p class="text-blue-500 font-black text-[10px] mb-2 uppercase tracking-widest">Question 05</p>
-              <h4 class="text-xl font-bold text-white">判定表に載っていない新しいツールを使いたい時は？</h4>
-            </div>
-            <div class="text-blue-500 text-2xl hidden md:block">▲</div>
-          </div>
-          <div class="p-8 border-t border-white/5 bg-black/40">
-            <p class="text-slate-300 leading-loose text-[15px]">
-              <strong class="text-white font-bold">「生成」か「補助」かで判断してください。</strong><br><br>
-              何もない空間にAIが新しい形を描くならレベル2以上、既存の線を整えたり効率化したりするだけならレベル1が目安です。迷ったら「これ使っていいですか？」と講師へ気軽に相談してください。
-            </p>
-          </div>
-        </div>
-
-        <div class="glass-card faq-item overflow-hidden transition-all border border-white/10 shadow-lg">
-          <div class="p-8 bg-white/5 flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <p class="text-blue-500 font-black text-[10px] mb-2 uppercase tracking-widest">Question 06</p>
-              <h4 class="text-xl font-bold text-white">AIを使わないと、周りに遅れてしまいますか？</h4>
-            </div>
-            <div class="text-blue-500 text-2xl hidden md:block">▲</div>
-          </div>
-          <div class="p-8 border-t border-white/5 bg-black/40">
-            <p class="text-slate-300 leading-loose text-[15px]">
-              <strong class="text-white font-bold">逆です。基礎があるからAIを使いこなせるのです。</strong><br><br>
-              AIツールは日々進化しますが、デッサン、構図、色彩設計といった「美術の基礎力」は一生変わりません。レベル0の授業で培う「地力」こそが、将来どんな最新AIが登場しても、それを圧倒的なクオリティで使いこなすための武器になります。
-            </p>
-          </div>
-        </div>
-
       </div>
     </section>
 
-    <section id="submit" class="max-w-md mx-auto text-center pb-24">
-      <div class="glass-card p-10 border-t-8 border-blue-600 shadow-2xl">
-        <h3 class="text-2xl font-black mb-12 tracking-widest uppercase italic">制作申告</h3>
-        <div class="space-y-4 mb-12 text-left">
-          <label class="flex items-center gap-5 p-6 bg-white/5 rounded-2xl border border-white/5 cursor-pointer hover:bg-white/10 transition-all">
-            <input type="checkbox" id="check1" onchange="checkValidation()" class="w-6 h-6 accent-blue-600">
-            <span class="text-sm font-bold text-slate-300">本日の指示レベルを守って制作した</span>
+    <section id="faq" class="mb-20">
+      <h3 class="text-sm font-black italic mb-8 border-l-4 border-blue-600 pl-4 uppercase tracking-widest">よくある質問 (FAQ)</h3>
+      
+      <div class="space-y-4">
+        <div class="glass p-6">
+          <p class="text-blue-400 text-xs font-black mb-2 uppercase">Q. ポートフォリオに載せてもいい？</p>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            OKです！ただし、「どこにAIを使ったか」を必ず書いてください。正直に明記することが、プロとしての信頼に繋がります。
+          </p>
+        </div>
+
+        <div class="glass p-6">
+          <p class="text-blue-400 text-xs font-black mb-2 uppercase">Q. 背景だけAIに描かせるのは？</p>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            授業の指示が「レベル2」以上ならOKです。レベル0や1の時は、背景の描き方も含めての学習なので、自力で頑張りましょう！
+          </p>
+        </div>
+
+        <div class="glass p-6">
+          <p class="text-blue-400 text-xs font-black mb-2 uppercase">Q. AIを使うと評価が下がりますか？</p>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            いいえ。適切なレベル設定の中で、どうAIを「使いこなしたか」を評価します。ただし、AI任せで自分の意志がない作品は、AI利用OKの授業でも評価されにくいです。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="submit" class="mb-20">
+      <div class="glass p-8 border-t-4 border-blue-600 bg-gradient-to-b from-blue-600/5 to-transparent">
+        <h3 class="text-center font-black mb-8 uppercase tracking-widest">制作報告・提出</h3>
+        
+        <div class="space-y-4 mb-8">
+          <label class="flex items-start gap-4 p-4 bg-white/5 rounded-xl cursor-pointer hover:bg-white/10 transition-colors">
+            <input type="checkbox" id="check1" onchange="toggleSubmit()" class="mt-1 w-5 h-5 accent-blue-600">
+            <span class="text-xs text-slate-400 leading-snug">指定された利用レベルを守って制作しました。</span>
           </label>
-          <label class="flex items-center gap-5 p-6 bg-white/5 rounded-2xl border border-white/5 cursor-pointer hover:bg-white/10 transition-all">
-            <input type="checkbox" id="check2" onchange="checkValidation()" class="w-6 h-6 accent-blue-600">
-            <span class="text-sm font-bold text-slate-300">制作プロセス（履歴等）を保存した</span>
+          <label class="flex items-start gap-4 p-4 bg-white/5 rounded-xl cursor-pointer hover:bg-white/10 transition-colors">
+            <input type="checkbox" id="check2" onchange="toggleSubmit()" class="mt-1 w-5 h-5 accent-blue-600">
+            <span class="text-xs text-slate-400 leading-snug">制作のプロセス（ラフやレイヤー履歴等）を保存しました。</span>
           </label>
         </div>
+
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSemcECAgiQRrN2u7wyMktHhJIyaH_XZsmoiHkCreGXR-KmcrQ/viewform?usp=sf_link" 
            target="_blank" id="submit-btn" 
-           class="disabled block w-full py-6 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-2xl transition-all no-underline text-lg shadow-xl shadow-blue-600/30">
-          報告フォームを開く
+           class="disabled block w-full py-5 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-xl text-center no-underline transition-all shadow-lg shadow-blue-600/20">
+          Googleフォームで報告
         </a>
       </div>
     </section>
+
   </main>
 
-  <footer class="bg-black border-t border-white/10 py-20 px-6 mt-12">
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start gap-16 text-left">
-      <div class="max-w-sm">
-        <h2 class="text-2xl font-black mb-6 tracking-[0.2em] uppercase">Toyo Institute of Art</h2>
-        <p class="text-slate-500 text-xs mb-10 font-bold leading-relaxed">
-          〒162-0067 東京都新宿区富久町2-6<br>
-          イラスト、デザイン、映像、そしてAI。最新技術を武器にする次世代のクリエイターを育成する。
-        </p>
-        <div class="flex gap-6 flex-wrap">
-          <a href="https://x.com/toyo_art" target="_blank" class="sns-link text-slate-400 text-[11px] font-black uppercase tracking-[0.2em]">X / Twitter</a>
-          <a href="https://www.instagram.com/toyo_art/" target="_blank" class="sns-link text-slate-400 text-[11px] font-black uppercase tracking-[0.2em]">Instagram</a>
-          <a href="https://www.youtube.com/user/toyoartschool" target="_blank" class="sns-link text-slate-400 text-[11px] font-black uppercase tracking-[0.2em]">YouTube</a>
-          <a href="https://www.facebook.com/toyoartschool" target="_blank" class="sns-link text-slate-400 text-[11px] font-black uppercase tracking-[0.2em]">Facebook</a>
-        </div>
-      </div>
-      
-      <div class="flex flex-col items-start md:items-end w-full md:w-auto">
-        <nav class="flex flex-wrap gap-8 text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-10">
-          <a href="https://www.toyoart.ac.jp/" target="_blank" class="hover:text-white transition-colors">学校公式サイト</a>
-          <a href="https://www.toyoart.ac.jp/privacy" target="_blank" class="hover:text-white transition-colors">個人情報保護方針</a>
-        </nav>
-        <p class="text-slate-800 text-[10px] font-black tracking-[0.5em] uppercase">
-          © 2025 TOYO INSTITUTE OF ART AND DESIGN
-        </p>
-      </div>
+  <footer class="px-6 py-10 border-t border-white/5 text-center">
+    <p class="text-[10px] text-slate-600 font-bold tracking-[0.3em] uppercase mb-4">Toyo Institute of Art and Design</p>
+    <div class="flex justify-center gap-6 mb-8">
+      <a href="https://x.com/toyo_art" class="text-slate-500 hover:text-white transition-colors"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+      <a href="https://www.instagram.com/toyo_art/" class="text-slate-500 hover:text-white transition-colors"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
     </div>
+    <p class="text-[8px] text-slate-800 tracking-[0.5em]">© 2025 TOYO INSTITUTE OF ART AND DESIGN</p>
   </footer>
 
 </body>
