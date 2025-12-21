@@ -1,180 +1,37 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI利用ガイドラインポータル | 東洋美術学校</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
-    :root {
-      --tobi-blue: #004bb1;
-      --tobi-navy: #002d6b;
-      --tobi-text: #1a1a1a;
-      --tobi-bg-gray: #f8f9fa;
-    }
-    body { background-color: #ffffff; font-family: 'Noto Sans JP', sans-serif; color: var(--tobi-text); line-height: 1.8; scroll-behavior: smooth; }
-    
-    /* 読みやすさのための段落幅制限 */
-    .readable-text { max-width: 42rem; margin-left: auto; margin-right: auto; }
-    @media (max-width: 768px) { .readable-text { max-width: 100%; } }
 
-    /* セクション見出し */
-    .section-title { font-size: 1.5rem; font-weight: 900; border-left: 6px solid var(--tobi-blue); padding-left: 1.25rem; color: var(--tobi-navy); line-height: 1.2; }
-    @media (min-width: 768px) { .section-title { font-size: 2.25rem; } }
 
-    /* スライダー：TOBIブルーに最適化 */
-    input[type=range] { -webkit-appearance: none; background: #e5e7eb; height: 8px; border-radius: 4px; width: 100%; }
-    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; background: var(--tobi-blue); cursor: pointer; border: 4px solid #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: 0.2s; }
+AI Guidelines Portal
+STUDENT PORTAL
+Academic Integrity & Co-creation
+AIを自らの意志で使いこなし、 表現の可能性を広げる。
+東洋美術学校は、生成AIを否定するのではなく、表現を支える新しい技術と捉えています。基礎を磨きつつ、最新技術を倫理的に操るためのガイドラインです。
+「想像できる力」があるからこそ、 AIはあなたに「翼」を授ける。
+表現の核にあるのは、あなた自身の好奇心です。本校が「レベル0」を掲げるのは、皆さんの可能性を縛るためではありません。AIを真に使いこなすための「基礎体力」を今、鍛え上げてほしいからです。
+自らの手で一本の線を引き、色を選び、悩み抜く。そのプロセスこそが、将来あなたをAIを「使いこなす側」へと導きます。
+Principal
+中込 大介
+レベル定義Level Definition
+LV.0 完全禁止
+自分の手と目のみで制作。アイデア出しへの利用も不可。
+LV.1 補助利用
+構成案や資料の相談に利用。生成された画像の直接利用は不可。
+LV.2 部分活用
+背景や素材の一部をAI生成。自力での加筆・加工を前提とする。
+LV.3 積極活用
+AIを主軸とした制作。ディレクション能力と制御力を評価。
+よくある質問: FAQ
+Question 01
+ポートフォリオにAI作品を載せても評価されますか？
+はい、評価対象になります。 ただし、AIをどう使い、どの部分に自分の「意志」と「スキル」を反映させたかをポートフォリオ内で明記してください。企業の採用担当者は、AIを使いこなす能力と、誠実な情報開示の両方をチェックしています。
+Question 02
+コンテストに応募する際、学校のルールを守れば大丈夫？
+主催者のルールを最優先してください。 学校でOKでも、応募先のルール（AI全面禁止等）に違反すると失格になります。必ず応募要項を読み込みましょう。
+Faculty Management
+📢 授業冒頭でスクリーンに投影してください
+None (Lv.0)Support (Lv.1)Part (Lv.2)Full (Lv.3)
+LEVEL 0
+Today's Class Policy
+本日のAI利用レベル：禁止
 
-    .disabled-btn { opacity: 0.2; pointer-events: none; filter: grayscale(1); }
-  </style>
-  <script>
-    const CONFIG = {
-      0: { name: 'LEVEL 0', color: '#e11d48', text: 'AI利用禁止' },
-      1: { name: 'LEVEL 1', color: '#004bb1', text: 'AI補助利用OK' },
-      2: { name: 'LEVEL 2', color: '#4f46e5', text: 'AI部分活用OK' },
-      3: { name: 'LEVEL 3', color: '#7c3aed', text: 'AI積極活用OK' }
-    };
-    function updateLevel(lv) {
-      const conf = CONFIG[lv];
-      const pBadge = document.getElementById('projection-badge');
-      const pTitle = document.getElementById('projection-title');
-      if (pBadge && pTitle) {
-        pBadge.innerText = conf.name;
-        pBadge.style.backgroundColor = conf.color;
-        pTitle.innerText = `本日のAI利用レベル：${conf.text.replace('OK','')}`;
-        pTitle.style.color = conf.color;
-      }
-    }
-    function validateChecks() {
-      const c1 = document.getElementById('check-level');
-      const c2 = document.getElementById('check-evidence');
-      const btn = document.getElementById('submit-btn');
-      if (c1.checked && c2.checked) { btn.classList.remove('disabled-btn'); }
-      else { btn.classList.add('disabled-btn'); }
-    }
-    document.addEventListener('DOMContentLoaded', () => {
-      const slider = document.getElementById('level-slider');
-      if (slider) {
-        slider.addEventListener('input', (e) => updateLevel(e.target.value));
-        updateLevel(0);
-      }
-    });
-  </script>
-</head>
-<body class="antialiased">
-
-  <header class="py-4 md:py-6 px-4 md:px-8 border-b border-gray-100 sticky top-0 bg-white/95 backdrop-blur-md z-50 flex justify-between items-center">
-    <div class="flex items-center gap-3 md:gap-4">
-      <a href="index.html">
-        <img src="https://www.to-bi.ac.jp/wp-content/themes/tobi2023/assets/img/common/logo.svg" alt="東洋美術学校" class="h-7 md:h-10">
-      </a>
-      <div class="h-6 w-px bg-gray-200 hidden md:block"></div>
-      <span class="text-[10px] md:text-[11px] font-bold tracking-widest text-gray-400 hidden sm:block uppercase">AI Guidelines Portal</span>
-    </div>
-    <nav class="flex gap-4 md:gap-8 text-[11px] md:text-[12px] font-bold">
-      <a href="student.html" class="bg-blue-600 text-white px-5 py-2 md:px-7 md:py-3 rounded-sm hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20">STUDENT PORTAL</a>
-    </nav>
-  </header>
-
-  <main>
-    <section class="max-w-5xl mx-auto px-6 py-16 md:py-32">
-      <div class="inline-block px-3 py-1 mb-6 border border-blue-100 bg-blue-50 rounded-sm text-blue-600 text-[10px] font-black tracking-widest uppercase italic">Academic Integrity & Co-creation</div>
-      <h2 class="text-4xl md:text-7xl font-black mb-8 leading-tight tracking-tighter text-slate-900 break-keep">
-        AIを意志で使いこなし、<br><span class="text-blue-600">表現の可能性</span>を広げる。
-      </h2>
-      <p class="text-lg md:text-xl text-gray-500 readable-text !ml-0 mb-10 leading-relaxed font-medium">
-        東洋美術学校は、生成AIを否定するのではなく、表現を支える新しい技術と捉えています。基礎を磨きつつ、最新技術を倫理的に操るためのガイドラインです。
-      </p>
-    </section>
-
-    <section class="bg-gray-50 py-16 md:py-32 px-6">
-      <div class="max-w-3xl mx-auto text-center">
-        <h3 class="text-2xl md:text-4xl font-black mb-12 leading-relaxed text-slate-900">「想像できる力」があるからこそ、<br>AIはあなたに<span class="text-blue-600">「翼」</span>を授ける。</h3>
-        <div class="space-y-8 text-gray-600 text-left leading-loose text-base md:text-lg readable-text">
-          <p>表現の核にあるのは、あなた自身の<span class="font-bold text-slate-900 border-b-2 border-blue-500">好奇心</span>です。本校が「レベル0」を掲げるのは、皆さんの可能性を縛るためではありません。AIを真に使いこなすための「基礎体力」を今、鍛え上げてほしいからです。</p>
-          <p>自らの手で一本の線を引き、色を選び、悩み抜く。そのプロセスこそが、将来あなたをAIを<span class="text-blue-600 font-bold">「使いこなす側」</span>へと導きます。</p>
-        </div>
-        <div class="mt-12 text-right border-t border-gray-200 pt-8">
-          <p class="text-gray-400 text-[10px] tracking-widest uppercase mb-1">Principal</p>
-          <p class="text-xl font-black text-slate-900">中込 大介</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="levels" class="max-w-6xl mx-auto px-6 py-24 md:py-32">
-      <h2 class="section-title mb-16">レベル定義<span class="text-sm font-normal text-gray-400 ml-4 italic uppercase tracking-widest">Level Definition</span></h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="p-8 border border-gray-100 bg-white shadow-sm hover:shadow-md transition-all">
-          <h3 class="text-xl font-black text-red-600 mb-6 italic">LV.0 <span class="text-xs not-italic text-gray-400 ml-2">完全禁止</span></h3>
-          <p class="text-sm text-gray-600 leading-relaxed">自分の手と目のみで制作。アイデア出しへの利用も不可。</p>
-        </div>
-        <div class="p-8 border border-gray-100 bg-white shadow-sm hover:shadow-md transition-all">
-          <h3 class="text-xl font-black text-blue-600 mb-6 italic">LV.1 <span class="text-xs not-italic text-gray-400 ml-2">補助利用</span></h3>
-          <p class="text-sm text-gray-600 leading-relaxed">構成案や資料の相談に利用。生成された画像の直接利用は不可。</p>
-        </div>
-        <div class="p-8 border border-gray-100 bg-white shadow-sm hover:shadow-md transition-all">
-          <h3 class="text-xl font-black text-indigo-600 mb-6 italic">LV.2 <span class="text-xs not-italic text-gray-400 ml-2">部分活用</span></h3>
-          <p class="text-sm text-gray-600 leading-relaxed">背景や素材の一部をAI生成。自力での加筆・加工を前提とする。</p>
-        </div>
-        <div class="p-8 border border-gray-100 bg-white shadow-sm hover:shadow-md transition-all">
-          <h3 class="text-xl font-black text-purple-600 mb-6 italic">LV.3 <span class="text-xs not-italic text-gray-400 ml-2">積極活用</span></h3>
-          <p class="text-sm text-gray-600 leading-relaxed">AIを主軸とした制作。ディレクション能力と制御力を評価。</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="faq" class="bg-gray-50 py-24 md:py-32 px-6">
-      <div class="max-w-5xl mx-auto">
-        <h2 class="text-center text-3xl font-black text-slate-900 mb-16 tracking-widest uppercase">よくある質問<span class="text-blue-600">:</span> FAQ</h2>
-        <div class="grid gap-6">
-          <div class="bg-white p-8 border border-gray-200 shadow-sm">
-            <p class="text-blue-600 font-black text-[10px] mb-2 uppercase tracking-widest">Question 01</p>
-            <h4 class="text-xl font-bold mb-4 text-slate-900">ポートフォリオにAI作品を載せても評価されますか？</h4>
-            <p class="text-gray-600 text-sm md:text-base leading-loose readable-text !ml-0">
-              <strong class="text-slate-900">はい、評価対象になります。</strong> ただし、AIをどう使い、どの部分に自分の「意志」と「スキル」を反映させたかをポートフォリオ内で明記してください。企業の採用担当者は、AIを使いこなす能力と、誠実な情報開示の両方をチェックしています。
-            </p>
-          </div>
-          <div class="bg-white p-8 border border-gray-200 shadow-sm">
-            <p class="text-blue-600 font-black text-[10px] mb-2 uppercase tracking-widest">Question 02</p>
-            <h4 class="text-xl font-bold mb-4 text-slate-900">コンテストに応募する際、学校のルールを守れば大丈夫？</h4>
-            <p class="text-gray-600 text-sm md:text-base leading-loose readable-text !ml-0">
-              <strong class="text-slate-900">主催者のルールを最優先してください。</strong> 学校でOKでも、応募先のルール（AI全面禁止等）に違反すると失格になります。必ず応募要項を読み込みましょう。
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="py-24 px-6 max-w-4xl mx-auto">
-      <div class="bg-white p-8 md:p-16 border-2 border-blue-600 text-center shadow-xl">
-        <p class="text-blue-600 text-[10px] font-black uppercase tracking-[0.4em] mb-8 italic">Faculty Management</p>
-        <h3 class="text-slate-900 text-xl md:text-2xl font-black mb-12 italic">📢 授業冒頭でスクリーンに投影してください</h3>
-        <div class="max-w-sm mx-auto mb-16">
-          <input type="range" id="level-slider" min="0" max="3" value="0" step="1">
-          <div class="flex justify-between text-[10px] font-black text-gray-400 mt-4 uppercase">
-            <span>None (Lv.0)</span><span>Support (Lv.1)</span><span>Part (Lv.2)</span><span>Full (Lv.3)</span>
-          </div>
-        </div>
-        <div class="inline-flex flex-col md:flex-row items-center border-t border-gray-100 pt-10">
-          <div id="projection-badge" class="px-10 py-6 bg-red-600 text-white font-black text-4xl shadow-lg rounded-sm">LEVEL 0</div>
-          <div class="text-left px-8 py-4">
-            <p class="text-[10px] text-gray-400 font-black uppercase tracking-widest mb-1">Today's Class Policy</p>
-            <p id="projection-title" class="text-2xl font-black italic tracking-tighter">本日のAI利用レベル：禁止</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="bg-slate-900 text-white py-16 px-8 border-t border-white/5">
-    <div class="max-w-5xl mx-auto text-center">
-      <img src="https://www.to-bi.ac.jp/wp-content/themes/tobi2023/assets/img/common/logo_white.svg" alt="東洋美術学校" class="h-8 mx-auto mb-8">
-      <p class="text-gray-400 text-[10px] font-bold tracking-[0.3em] uppercase">School of Design & Art</p>
-      <p class="text-gray-500 text-[11px] mt-8">Copyright © TOYO INSTITUTE OF ART AND DESIGN. All rights reserved.</p>
-    </div>
-  </footer>
-
-</body>
-</html>
+School of Design & Art
+Copyright © TOYO INSTITUTE OF ART AND DESIGN. All rights reserved.
