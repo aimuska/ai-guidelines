@@ -10,39 +10,43 @@
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Plus+Jakarta+Sans:wght@800&display=swap');
     
     body { 
-      background-color: #050505; 
+      background: radial-gradient(circle at top right, #001d3d, #000814); /* 青ベースの背景色 */
       font-family: 'Noto Sans JP', sans-serif; 
       color: #ffffff; 
       scroll-behavior: smooth;
       -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
     }
 
-    /* index.htmlと共通のグラスモフィズム */
+    /* インデックスと共通のグラスモフィズム */
     .glass-card { 
-      background: rgba(255, 255, 255, 0.02); 
+      background: rgba(255, 255, 255, 0.03); 
       backdrop-filter: blur(20px); 
       border: 1px solid rgba(255, 255, 255, 0.1); 
       border-radius: 32px; 
     }
     
-    /* スライダーUIの統一 */
+    /* スライダー：青のデザインに最適化 */
     input[type=range] { -webkit-appearance: none; background: rgba(255,255,255,0.1); height: 12px; border-radius: 6px; width: 100%; }
     input[type=range]::-webkit-slider-thumb { 
       -webkit-appearance: none; width: 32px; height: 32px; border-radius: 50%; background: #ffffff; 
-      cursor: pointer; border: 6px solid #3b82f6; box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+      cursor: pointer; border: 6px solid #3b82f6; box-shadow: 0 0 25px rgba(59, 130, 246, 0.6);
+      transition: transform 0.2s ease;
     }
 
     #submit-btn.disabled { opacity: 0.1; pointer-events: none; filter: grayscale(1); }
+    
+    /* FAQアイテムのホバー・改行調整 */
     .faq-item { transition: all 0.3s ease; }
-    .faq-item:hover { background: rgba(255, 255, 255, 0.04); border-color: rgba(59, 130, 246, 0.4); }
+    .faq-item:hover { border-color: rgba(59, 130, 246, 0.6); background: rgba(255, 255, 255, 0.05); }
   </style>
 
   <script>
     const CONFIG = {
-      0: { name: 'レベル 0', color: '#ff4d4d', title: 'AI利用禁止', desc: '自分の「目」と「手」だけで描く。', detail: '・AIツールの起動禁止\n・完全な手動制作（アナログ・デジタル）\n・基礎力の向上に集中する' },
-      1: { name: 'レベル 1', color: '#3b82f6', title: 'AI補助利用', desc: 'AIを「軍師」として活用する。', detail: '・ChatGPT等でのアイデア出しOK\n・構成案の相談OK\n・生成された画像の直接利用は不可' },
-      2: { name: 'レベル 2', color: '#6366f1', title: 'AI部分活用', desc: 'AIを「素材」として統合する。', detail: '・背景やテクスチャの生成利用OK\n・AI生成物を素材として加工・加筆する\n・オリジナリティを自力で保持すること' },
-      3: { name: 'レベル 3', color: '#a855f7', title: 'AI積極活用', desc: 'AIを「メインツール」として操る。', detail: '・AI画像・動画生成の全面活用OK\n・高度なディレクション能力を評価\n・コンセプト設計と修正能力の重視' }
+      0: { name: 'レベル 0', color: '#ff4d4d', title: 'AI利用禁止', desc: '自分の「目」と「手」だけで描く。クリエイターとしての圧倒的な地力を養うモード。', detail: '・AIツールの起動禁止\n・アイデア出しへの利用禁止\n・完全な手動制作（アナログ・デジタル）' },
+      1: { name: 'レベル 1', color: '#3b82f6', title: 'AI補助利用', desc: 'ChatGPTやGeminiを「軍師」として活用。構成案やアイデアをAIと対話し、思考を広げるモード。', detail: '・プロンプトによるアイデア出しOK\n・制作の効率化・相談OK\n・生成された画像の直接利用は不可' },
+      2: { name: 'レベル 2', color: '#6366f1', title: 'AI部分活用', desc: '背景や素材の一部に生成AIを統合。自分の表現意図に合わせてAIを制御・加工するモード。', detail: '・背景やテクスチャのAI生成利用OK\n・AI生成物を素材として加工利用OK\n・作品のオリジナリティを自力で保持すること' },
+      3: { name: 'レベル 3', color: '#a855f7', title: 'AI積極活用', desc: 'AIをメインツールとして活用。高度なディレクション能力と制御力を証明する、未来の制作モード。', detail: '・AI画像・動画生成の全面活用OK\n・出力を制御するディレクション能力を評価\n・コンセプト設計と修正能力の重視' }
     };
 
     function updateLevel(lv) {
@@ -53,7 +57,8 @@
       document.getElementById('status-title').style.color = conf.color;
       document.getElementById('status-desc').innerText = conf.desc;
       document.getElementById('status-detail').innerText = conf.detail;
-      document.getElementById('main-card').style.borderColor = conf.color + '44';
+      document.getElementById('main-card').style.borderColor = conf.color + '66';
+      document.getElementById('main-card').style.boxShadow = `0 0 50px ${conf.color}20`;
     }
 
     function checkValidation() {
@@ -70,32 +75,28 @@
 </head>
 <body>
 
-  <header class="p-6 border-b border-white/5 bg-black/80 sticky top-0 z-50 backdrop-blur-lg flex justify-between items-center">
+  <header class="p-6 border-b border-white/5 bg-[#000814]/80 sticky top-0 z-50 backdrop-blur-lg flex justify-between items-center">
     <div class="flex items-center gap-4">
-      <div class="bg-blue-600 text-white font-black px-3 py-1 text-[12px] rounded-sm">東洋美術学校</div>
-      <h1 class="text-sm font-bold tracking-widest uppercase hidden md:block">Student Portal</h1>
+      <div class="bg-blue-600 text-white font-black px-3 py-1 text-[12px] rounded-sm shadow-lg shadow-blue-600/30">東洋美術学校</div>
+      <h1 class="text-sm font-bold tracking-widest uppercase">Student Portal</h1>
     </div>
     <nav class="flex gap-6 text-[11px] font-bold text-slate-400">
-      <a href="index.html" class="hover:text-white transition-colors">← トップへ戻る</a>
-      <a href="#faq" class="hover:text-white transition-colors">よくある質問</a>
-      <a href="#submit" class="text-blue-500 font-black">制作報告</a>
+      <a href="index.html" class="hover:text-white transition-colors">← HOME</a>
+      <a href="#faq" class="hover:text-white transition-colors">FAQ</a>
+      <a href="#submit" class="text-blue-400 font-black">REPORT</a>
     </nav>
   </header>
 
   <main class="py-12 px-6 max-w-4xl mx-auto">
     
     <section class="mb-24">
-      <div class="text-center mb-12">
-        <h2 class="text-blue-500 text-[10px] font-black tracking-[0.4em] uppercase mb-4">Current Work Mode</h2>
-        <p class="text-3xl font-black">今日の制作レベルを確認</p>
-      </div>
-
       <div id="main-card" class="glass-card p-8 md:p-16 border-2 transition-all duration-700 shadow-2xl text-center">
-        <div id="status-badge" class="px-8 py-2 rounded-full text-sm font-black text-white mb-8 inline-block shadow-lg">レベル 0</div>
-        <h2 id="status-title" class="text-5xl md:text-7xl font-black mb-8 tracking-tighter transition-all">AI利用禁止</h2>
-        <p id="status-desc" class="text-slate-200 text-lg font-bold mb-8">自分の力だけで描く。クリエイターとしての原点を作るモード。</p>
+        <p class="text-[10px] font-bold text-blue-400 tracking-[0.4em] mb-10 uppercase">Current Operation Mode</p>
+        <div id="status-badge" class="px-8 py-2 rounded-full text-sm font-black text-white mb-8 inline-block shadow-lg transition-colors duration-500">レベル 0</div>
+        <h2 id="status-title" class="text-5xl md:text-7xl font-black mb-8 tracking-tighter transition-colors duration-500">AI利用禁止</h2>
+        <p id="status-desc" class="text-slate-200 text-lg font-bold mb-10 leading-relaxed">自分の力だけで描く。クリエイターとしての原点を作るモード。</p>
         
-        <div class="bg-white/5 p-8 rounded-2xl border border-white/5 text-left mb-12">
+        <div class="bg-black/40 p-8 rounded-2xl border border-white/5 text-left mb-12">
           <pre id="status-detail" class="text-slate-400 text-sm font-sans leading-relaxed whitespace-pre-line">・AIツールの起動禁止
 ・完全な自力制作
 ・基礎力の向上</pre>
@@ -103,8 +104,8 @@
 
         <div class="max-w-md mx-auto">
           <input type="range" id="level-slider" min="0" max="3" value="0" step="1">
-          <div class="flex justify-between mt-6 text-[10px] font-black text-slate-600 uppercase tracking-widest">
-            <span>禁止 (0)</span><span>補助 (1)</span><span>部分 (2)</span><span>積極 (3)</span>
+          <div class="flex justify-between mt-6 text-[10px] font-black text-slate-500 uppercase tracking-widest">
+            <span>Level 0</span><span>Level 1</span><span>Level 2</span><span>Level 3</span>
           </div>
         </div>
       </div>
@@ -112,64 +113,103 @@
 
     <section id="faq" class="mb-32">
       <div class="flex items-center gap-6 mb-12">
-        <h3 class="text-xl font-black text-white italic tracking-wider">学生向けFAQ</h3>
+        <h3 class="text-xl font-black text-white italic tracking-wider">よくある質問</h3>
         <div class="h-px flex-1 bg-white/5"></div>
       </div>
 
-      <div class="space-y-6">
-        <div class="glass-card p-8 faq-item border border-white/10">
-          <p class="text-blue-500 font-black text-[10px] mb-3 uppercase tracking-widest">Question 01</p>
-          <h4 class="text-lg font-bold text-white mb-4">ポートフォリオにAI作品を載せても評価されますか？</h4>
-          <p class="text-slate-400 text-[15px] leading-relaxed">
-            <strong class="text-white">はい、評価対象になります。</strong> ただし、AIをどう使い、どの部分に自分の「意志」と「スキル」を反映させたかをポートフォリオ内で明記してください。企業の採用担当者は、AIを使いこなす能力と、誠実な情報開示の両方をチェックしています。
-          </p>
+      <div class="grid gap-8">
+        <div class="glass-card faq-item overflow-hidden border border-white/10">
+          <div class="p-8 bg-white/5">
+            <p class="text-blue-400 font-black text-[10px] mb-2 uppercase tracking-widest">Question 01</p>
+            <h4 class="text-xl font-bold text-white leading-snug">就活のポートフォリオにAI作品を載せてもいいですか？</h4>
+          </div>
+          <div class="p-8 border-t border-white/5 bg-black/40 text-slate-300 leading-loose text-[15px]">
+            <strong class="text-white font-bold underline decoration-blue-500 decoration-2 underline-offset-4">はい、可能ですが「明記」が必須です。</strong><br><br>
+            どの工程にどのAI（ChatGPT、Adobe Firefly等）を使い、どこを自分の手で描いたかを必ず注釈に入れてください。企業の採用担当者は技術力だけでなく「誠実さ」も見ています。
+          </div>
         </div>
 
-        <div class="glass-card p-8 faq-item border border-white/10">
-          <p class="text-blue-500 font-black text-[10px] mb-3 uppercase tracking-widest">Question 02</p>
-          <h4 class="text-lg font-bold text-white mb-4">コンテストに応募する際、学校のルールを守れば大丈夫？</h4>
-          <p class="text-slate-400 text-[15px] leading-relaxed">
-            <strong class="text-white">主催者のルールを最優先してください。</strong> コンテストによっては「AI全面禁止」や「特定のAIのみOK」といった独自の規定があります。学校の制作物としてOKでも、応募先のルールに違反すると失格になるため、必ず応募要項を読み込みましょう。
-          </p>
+        <div class="glass-card faq-item overflow-hidden border border-white/10">
+          <div class="p-8 bg-white/5">
+            <p class="text-blue-400 font-black text-[10px] mb-2 uppercase tracking-widest">Question 02</p>
+            <h4 class="text-xl font-bold text-white leading-snug">ChatGPTで書いたレポートをそのまま提出してもいいですか？</h4>
+          </div>
+          <div class="p-8 border-t border-white/5 bg-black/40 text-slate-300 leading-loose text-[15px]">
+            <strong class="text-red-400 font-bold underline decoration-red-400 decoration-2 underline-offset-4">絶対に避けてください。</strong><br><br>
+            AIが生成する文章には事実誤認（ハルシネーション）が含まれる場合があります。AIの回答はあくまで「構成のヒント」として使い、必ず自分の言葉で書き直してください。
+          </div>
         </div>
 
-        <div class="glass-card p-8 faq-item border border-white/10">
-          <p class="text-blue-500 font-black text-[10px] mb-3 uppercase tracking-widest">Question 03</p>
-          <h4 class="text-lg font-bold text-white mb-4">AIで作った画像に著作権はありますか？</h4>
-          <p class="text-slate-400 text-[15px] leading-relaxed">
-            <strong class="text-white">「指示だけ」で生成された画像には権利が認められにくいです。</strong> 自分が創作的な寄与（加筆や複雑な構成の制御など）を加えて初めて、法的に保護される可能性が高まります。将来的に自分の作品の権利を守るためにも、加筆や加工の工程を大切にしましょう。
-          </p>
+        <div class="glass-card faq-item overflow-hidden border border-white/10">
+          <div class="p-8 bg-white/5">
+            <p class="text-blue-400 font-black text-[10px] mb-2 uppercase tracking-widest">Question 03</p>
+            <h4 class="text-xl font-bold text-white leading-snug">外部のコンテストに応募する際、AIを使っても大丈夫ですか？</h4>
+          </div>
+          <div class="p-8 border-t border-white/5 bg-black/40 text-slate-300 leading-loose text-[15px]">
+            <strong class="text-white font-bold underline decoration-blue-500 decoration-2 underline-offset-4">主催者のルールを最優先してください。</strong><br><br>
+            学校のガイドラインを守っていても、応募先のルールに違反すれば失格となります。コンテストごとに異なる「AI使用規定」を必ず熟読しましょう。
+          </div>
         </div>
+
+        <div class="glass-card faq-item overflow-hidden border border-white/10">
+          <div class="p-8 bg-white/5">
+            <p class="text-blue-400 font-black text-[10px] mb-2 uppercase tracking-widest">Question 04</p>
+            <h4 class="text-xl font-bold text-white leading-snug">AIで生成した画像に「著作権」は発生しますか？</h4>
+          </div>
+          <div class="p-8 border-t border-white/5 bg-black/40 text-slate-300 leading-loose text-[15px]">
+            <strong class="text-white font-bold decoration-blue-500">現状の法制度では「指示だけ」の画像に権利は認められにくいです。</strong><br><br>
+            自らの手による大幅な加筆や、複雑な構成の制御を行って初めて、法的に保護される可能性があります。AI任せの作品は自分の権利を主張できないリスクがあることを理解しましょう。
+          </div>
+        </div>
+
+        <div class="glass-card faq-item overflow-hidden border border-white/10">
+          <div class="p-8 bg-white/5">
+            <p class="text-blue-400 font-black text-[10px] mb-2 uppercase tracking-widest">Question 05</p>
+            <h4 class="text-xl font-bold text-white leading-snug">判定表に載っていない新しいAIツールを使いたい場合は？</h4>
+          </div>
+          <div class="p-8 border-t border-white/5 bg-black/40 text-slate-300 leading-loose text-[15px]">
+            <strong class="text-white font-bold">その機能が「生成」か「補助」かで判断してください。</strong><br><br>
+            何もないところから絵や文を作るならレベル2以上、作業を効率化するだけならレベル1が目安です。迷った場合は、担当講師へ気軽に相談してください。
+          </div>
+        </div>
+
+        <div class="glass-card faq-item overflow-hidden border border-white/10">
+          <div class="p-8 bg-white/5">
+            <p class="text-blue-400 font-black text-[10px] mb-2 uppercase tracking-widest">Question 06</p>
+            <h4 class="text-xl font-bold text-white leading-snug">AIを使わないと、周りに遅れてしまいますか？</h4>
+          </div>
+          <div class="p-8 border-t border-white/5 bg-black/40 text-slate-300 leading-loose text-[15px]">
+            <strong class="text-white font-bold">逆です。基礎があるからこそAIを使いこなせるのです。</strong><br><br>
+            デッサンや色彩設計といった「美術の基礎力」は一生変わりません。レベル0の授業で培う「地力」こそが、将来どんなAIが登場してもそれを圧倒するための最大の武器になります。
+          </div>
+        </div>
+
       </div>
     </section>
 
     <section id="submit" class="max-w-md mx-auto text-center pb-24">
       <div class="glass-card p-10 border-t-8 border-blue-600 shadow-2xl">
-        <h3 class="text-2xl font-black mb-8 tracking-widest uppercase italic">制作申告</h3>
-        <p class="text-xs text-slate-500 mb-8 font-bold">今日の制作が終わったら、以下の項目をチェックして報告してください。</p>
-        
+        <h3 class="text-2xl font-black mb-8 tracking-widest uppercase italic">制作報告</h3>
         <div class="space-y-4 mb-10 text-left">
           <label class="flex items-center gap-5 p-6 bg-white/5 rounded-2xl border border-white/5 cursor-pointer hover:bg-white/10 transition-all">
             <input type="checkbox" id="check1" onchange="checkValidation()" class="w-6 h-6 accent-blue-600">
-            <span class="text-sm font-bold text-slate-300">本日の指定レベルを守った</span>
+            <span class="text-sm font-bold text-slate-300">指示レベルを守って制作した</span>
           </label>
           <label class="flex items-center gap-5 p-6 bg-white/5 rounded-2xl border border-white/5 cursor-pointer hover:bg-white/10 transition-all">
             <input type="checkbox" id="check2" onchange="checkValidation()" class="w-6 h-6 accent-blue-600">
             <span class="text-sm font-bold text-slate-300">制作工程（ログ）を保存した</span>
           </label>
         </div>
-        
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSemcECAgiQRrN2u7wyMktHhJIyaH_XZsmoiHkCreGXR-KmcrQ/viewform?usp=sf_link" 
            target="_blank" id="submit-btn" 
            class="disabled block w-full py-6 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-2xl transition-all no-underline text-lg shadow-xl shadow-blue-600/30">
-          Googleフォームで報告
+          REPORT FORM
         </a>
       </div>
     </section>
-
   </main>
 
-  <footer class="bg-black border-t border-white/10 py-20 px-6">
+  <footer class="bg-[#000814] border-t border-white/10 py-20 px-6">
     <div class="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12 text-left">
       <div>
         <h2 class="text-xl font-black mb-4 tracking-[0.2em] uppercase">東洋美術学校</h2>
@@ -181,7 +221,6 @@
       <div class="flex flex-wrap gap-8 text-[11px] font-bold text-slate-500 uppercase tracking-widest">
         <a href="https://www.toyoart.ac.jp/" target="_blank" class="hover:text-white transition-colors">Official Site</a>
         <a href="https://x.com/toyo_art" target="_blank" class="hover:text-white transition-colors">X / Twitter</a>
-        <a href="https://www.instagram.com/toyo_art/" target="_blank" class="hover:text-white transition-colors">Instagram</a>
       </div>
     </div>
   </footer>
