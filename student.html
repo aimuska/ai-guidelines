@@ -26,7 +26,7 @@
       50% { transform: translateY(-5px); }
     }
     .correct-anim { animation: bounce-subtle 0.5s ease; }
-    .lock-overlay { backdrop-filter: blur(8px); background: rgba(15, 23, 42, 0.8); }
+    .lock-overlay { backdrop-filter: blur(8px); background: rgba(15, 23, 42, 0.8); transition: all 0.6s ease; }
     .btn-disabled { opacity: 0.2; pointer-events: none; filter: grayscale(1); }
     .answered { pointer-events: none; }
   </style>
@@ -38,9 +38,9 @@
       <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white">
         <i data-lucide="zap" size="18"></i>
       </div>
-      <span class="font-eng font-800 tracking-tighter text-xl">AI PORTAL</span>
+      <span class="font-eng font-800 tracking-tighter text-xl text-slate-900">AI PORTAL</span>
     </div>
-    <a href="index.html" class="text-[10px] font-bold text-gray-400 hover:text-blue-600 transition-colors uppercase tracking-widest">Guide Line</a>
+    <a href="index.html" class="text-[10px] font-bold text-gray-400 hover:text-blue-600 transition-colors uppercase tracking-widest no-underline">Guide Line</a>
   </header>
 
   <main class="max-w-2xl mx-auto px-6">
@@ -55,6 +55,14 @@
     <div id="quiz-stack" class="space-y-6">
       </div>
 
+    <div id="retry-area" class="mt-8 text-center hidden">
+      <p id="retry-msg" class="text-red-500 font-black text-sm mb-4 italic uppercase tracking-widest">Mission Failed...</p>
+      <button onclick="init()" class="px-8 py-4 bg-slate-900 text-white rounded-full font-black text-xs tracking-widest flex items-center gap-2 mx-auto hover:bg-blue-600 transition-all active:scale-95 shadow-lg">
+        <i data-lucide="refresh-cw" size="14"></i>
+        RETRY MISSION
+      </button>
+    </div>
+
     <div class="mt-10 flex justify-center">
       <div class="bg-white px-8 py-4 rounded-full shadow-xl shadow-blue-500/10 flex items-center gap-6 border border-blue-50">
         <div class="text-center">
@@ -63,7 +71,7 @@
         </div>
         <div class="h-8 w-[1px] bg-gray-100"></div>
         <div class="text-center">
-          <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest">Score</p>
+          <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest font-eng">Score</p>
           <div class="flex items-baseline gap-1">
             <span id="score-display" class="text-2xl font-black font-eng">0</span>
             <span class="text-gray-300 font-bold text-sm">/ 2</span>
@@ -72,12 +80,12 @@
       </div>
     </div>
 
-    <div class="mt-12 relative group">
-      <div id="form-lock" class="absolute inset-0 z-20 lock-overlay rounded-3xl flex flex-col items-center justify-center text-white p-8 transition-all duration-500">
+    <div class="mt-12 relative">
+      <div id="form-lock" class="absolute inset-0 z-20 lock-overlay rounded-3xl flex flex-col items-center justify-center text-white p-8">
         <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mb-4 border border-white/20">
           <i data-lucide="lock" class="text-white"></i>
         </div>
-        <p class="font-bold text-sm tracking-widest uppercase">Form Locked</p>
+        <p class="font-bold text-sm tracking-widest uppercase font-eng">Form Locked</p>
         <p class="text-[10px] text-white/50 mt-2 italic text-center leading-relaxed">全ての試練を乗り越えた者にのみ、<br>報告の権利が与えられる。</p>
       </div>
 
@@ -117,7 +125,6 @@
   <script>
     lucide.createIcons();
 
-    // 25問のストックプール
     const pool = [
       { q: "AIへの指示文（Prompt）は、具体的であるほど精度が上がる？", a: ["Yes", "No"], c: 0 },
       { q: "AIが事実とは異なる情報を生成することを何と呼ぶ？", a: ["ハルシネーション", "ゴースト"], c: 0 },
@@ -147,9 +154,21 @@
     ];
 
     let score = 0;
+    let answeredCount = 0;
     let selected = [];
 
     function init() {
+      // リセット
+      score = 0;
+      answeredCount = 0;
+      document.getElementById('score-display').innerText = "0";
+      document.getElementById('retry-area').classList.add('hidden');
+      document.getElementById('status-text').innerText = "LOCKED";
+      document.getElementById('status-text').classList.replace('text-green-500', 'text-red-500');
+      document.getElementById('form-lock').style.opacity = "1";
+      document.getElementById('form-lock').style.pointerEvents = "auto";
+      document.getElementById('form-lock').style.transform = "translateY(0)";
+      
       // 25問からランダムに3問選ぶ
       selected = pool.sort(() => 0.5 - Math.random()).slice(0, 3);
       const stack = document.getElementById('quiz-stack');
@@ -167,12 +186,14 @@
         `;
         stack.appendChild(card);
       });
+      lucide.createIcons();
     }
 
     function ans(qIdx, aIdx, btn) {
       const p = btn.parentElement;
       if(p.classList.contains('answered')) return;
       p.classList.add('answered');
+      answeredCount++;
       
       const isCorrect = aIdx === selected[qIdx].c;
       if(isCorrect) {
@@ -182,17 +203,28 @@
         btn.classList.add('bg-red-500', 'text-white', 'border-red-500');
         p.children[selected[qIdx].c].classList.add('border-blue-600', 'text-blue-600');
       }
-      updateUI();
+      
+      document.getElementById('score-display').innerText = score;
+
+      // 3問全て回答し終わった判定
+      if (answeredCount === 3) {
+        setTimeout(checkFinalResult, 500);
+      }
     }
 
-    function updateUI() {
-      document.getElementById('score-display').innerText = score;
+    function checkFinalResult() {
       if(score >= 2) {
+        // 合格
         document.getElementById('status-text').innerText = "UNLOCKED";
         document.getElementById('status-text').classList.replace('text-red-500', 'text-green-500');
         document.getElementById('form-lock').style.opacity = "0";
         document.getElementById('form-lock').style.pointerEvents = "none";
         document.getElementById('form-lock').style.transform = "translateY(-10px)";
+        document.getElementById('retry-area').classList.add('hidden');
+      } else {
+        // 不合格 -> やり直しボタン表示
+        document.getElementById('retry-area').classList.remove('hidden');
+        document.getElementById('retry-msg').innerText = "Mission Failed... Try Again!";
       }
       validateFinal();
     }
