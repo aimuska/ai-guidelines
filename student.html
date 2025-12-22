@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>STUDENT PORTAL | 生成AI利用ガイドライン</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap');
+    body { background-color: #fcfcfc; font-family: 'Noto Sans JP', sans-serif; color: #1a1a1a; line-height: 1.7; }
+    
+    /* レベルカードの動的スタイル */
+    .status-card { background: #ffffff; border-top: 6px solid #e11d48; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    
+    /* スライダーのデザイン */
+    input[type=range] { -webkit-appearance: none; background: #e5e7eb; height: 10px; border-radius: 5px; width: 100%; }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 28px; height: 28px; border-radius: 50%; background: #004bb1; cursor: pointer; border: 4px solid #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    
+    /* ボタン無効化状態 */
+    .btn-disabled { opacity: 0.15; pointer-events: none; filter: grayscale(1); }
+    .answered { pointer-events: none; }
+  </style>
+</head>
+<body class="pb-12">
+
+  <header class="bg-white border-b border-gray-100 p-4 mb-6 md:mb-10 flex justify-between items-center sticky top-0 z-50">
+    <a href="index.html"><img src="https://www.to-bi.ac.jp/wp-content/themes/tobi2023/assets/img/common/logo.svg" alt="東洋美術学校" class="h-6"></a>
+    <a href="index.html" class="text-[10px] font-black text-gray-400 tracking-widest uppercase hover:text-blue-600 transition-colors">← Back to Portal</a>
+  </header>
+
+  <main class="max-w-xl mx-auto px-6">
+    
+    <div class="mb-10 text-center">
+      <h2 class="text-2xl md:text-3xl font-black text-slate-900 mb-3 uppercase tracking-tighter">Student Support</h2>
+      <p class="text-xs text-gray-500 font-medium leading-relaxed">
+        今日の制作、AIをどこまで使っていいか確認しましょう。<br>
+        最後にクイズ（2問正解必須）があります。
+      </p>
+    </div>
+
+    <div id="main-card" class="status-card p-8 md:p-12 text-center rounded-sm">
+      <div id="icon-wrap" class="flex justify-center mb-6 text-red-600">
+        <i data-lucide="ban" size="48"></i>
+      </div>
+      
+      <div id="badge" class="inline-block px-4 py-1 rounded-sm text-white text-[10px] font-black mb-4 uppercase tracking-widest" style="background-color: #e11d48;">
+        レベル 0
+      </div>
+      
+      <h3 id="title" class="text-3xl md:text-4xl font-black mb-4" style="color: #e11d48;">AI利用禁止</h3>
+      <p id="desc" class="text-gray-500 font-bold mb-8 text-sm leading-relaxed">自分の力だけで表現を磨く。</p>
+      
+      <div class="bg-gray-50 p-6 rounded-sm text-left mb-10 border border-gray-100">
+        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">Allowed Scope / 許可範囲</p>
+        <pre id="detail" class="text-xs md:text-sm text-gray-600 font-sans whitespace-pre-line leading-loose">・AIツールの起動禁止
+・完全な手動制作
+・観察力と基礎力の習得が目的</pre>
+      </div>
+      
+      <div class="px-2">
+        <input type="range" class="w-full" min="0" max="3" value="0" step="1" oninput="updateLevel(this.value)">
+        <div class="flex justify-between mt-4 text-[9px] font-black text-gray-300 uppercase tracking-widest">
+          <span>Lv.0</span><span>Lv.1</span><span>Lv.2</span><span>Lv.3</span>
+        </div>
+      </div>
+    </div>
+
+    <section class="mt-10 bg-white border border-gray-100 p-8 rounded-sm shadow-sm">
+      <div class="flex items-center gap-2 mb-6">
+        <div class="p-2 bg-yellow-50 text-yellow-600 rounded-lg"><i data-lucide="brain-circuit"></i></div>
+        <h3 class="text-lg font-black italic uppercase tracking-tighter text-slate-800">AI Skill Check</h3>
+      </div>
+      
+      <p class="text-[10px] text-gray-400 font-bold mb-6 uppercase tracking-widest">送信には2問以上の正解が必要です</p>
+      
+      <div id="quiz-container" class="space-y-10">
+        </div>
+
+      <div class="mt-10 pt-6 border-t border-dashed border-gray-100 flex justify-between items-center">
+        <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">Current Score</span>
+        <div class="flex items-baseline gap-1">
+          <span id="score-display" class="text-2xl font-black text-slate-900">0</span>
+          <span class="text-sm font-bold text-gray-300">/ 2 clear</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="mt-10 bg-slate-900 text-white p-8 md:p-12 shadow-2xl rounded-sm">
+      <div class="relative z-10">
+        <h3 class="font-bold mb-8 text-lg tracking-widest text-center italic uppercase text-blue-400">Final Step</h3>
+        
+        <div class="space-y-4 mb-10">
+          <label class="flex items-center p-4 bg-white/5 border border-white/10 cursor-pointer hover:bg-white/10 transition-colors">
+            <input type="checkbox" id="ch1" onchange="validateForm()" class="h-5 w-5 accent-blue-500">
+            <span class="ml-4 font-bold text-xs">利用レベルを遵守しました</span>
+          </label>
+          <label class="flex items-center p-4 bg-white/5 border border-white/10 cursor-pointer hover:bg-white/10 transition-colors">
+            <input type="checkbox" id="ch2" onchange="validateForm()" class="h-5 w-5 accent-blue-500">
+            <span class="ml-4 font-bold text-xs">制作工程を保存しました</span>
+          </label>
+          
+          <div id="quiz-status-msg" class="text-[10px] font-bold text-center py-3 text-red-400 bg-red-400/10 rounded tracking-widest">
+            ✕ クイズを2問以上正解してください
+          </div>
+        </div>
+        
+        <a id="sb-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSemcECAgiQRrN2u7wyMktHhJIyaH_XZsmoiHkCreGXR-KmcrQ/viewform?usp=sf_link" 
+           target="_blank" class="btn-disabled block w-full py-5 bg-blue-600 text-white font-black rounded-sm text-center no-underline shadow-lg italic tracking-[0.2em] uppercase transition-all">
+          Submit Report
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="mt-16 text-center pb-12">
+    <p class="text-gray-400 text-[9px] font-bold tracking-[0.3em] uppercase italic">Toyo Institute of Art and Design</p>
+  </footer>
+
+  <script>
+    // アイコン初期化
+    lucide.createIcons();
+
+    // 1. レベルシミュレーターの設定
+    const LV_CONFIG = {
+      0: { name: 'レベル 0', color: '#e11d48', icon: 'ban', title: 'AI利用禁止', desc: '自分の力だけで表現を磨く。', detail: '・AIツールの起動禁止\n・完全な手動制作\n・観察力と基礎力の習得が目的' },
+      1: { name: 'レベル 1', color: '#004bb1', icon: 'message-square', title: 'AI補助利用', desc: 'AIと対話して思考を広げる。', detail: '・アイデア出し・構成案の相談OK\n・文章の校閲や翻訳への利用OK\n・生成画像の直接利用は不可' },
+      2: { name: 'レベル 2', color: '#4f46e5', icon: 'layers', title: 'AI部分活用', desc: 'AIを素材としてコントロールする。', detail: '・背景やテクスチャの一部生成OK\n・生成物への大幅な加筆・加工が前提\n・自分の意志で絵を完成させる' },
+      3: { name: 'レベル 3', color: '#7c3aed', icon: 'zap', title: 'AI積極活用', desc: 'AIを表現の主軸として使いこなす。', detail: '・AIによる画像生成を全面的に活用\n・プロンプトによる高度な制御\n・アートディレクション能力を評価' }
+    };
+
+    function updateLevel(lv) {
+      const conf = LV_CONFIG[lv];
+      document.getElementById('badge').innerText = conf.name;
+      document.getElementById('badge').style.backgroundColor = conf.color;
+      document.getElementById('title').innerText = conf.title;
+      document.getElementById('title').style.color = conf.color;
+      document.getElementById('desc').innerText = conf.desc;
+      document.getElementById('detail').innerText = conf.detail;
+      document.getElementById('main-card').style.borderTopColor = conf.color;
+      const iconWrap = document.getElementById('icon-wrap');
+      iconWrap.innerHTML = `<i data-lucide="${conf.icon}" size="48"></i>`;
+      iconWrap.style.color = conf.color;
+      lucide.createIcons();
+    }
+
+    // 2. クイズデータ（21問のプール）
+    const questionPool = [
+      { q: "AIへの指示文のことを何と呼ぶ？", a: ["プロンプト", "スクリプト"], c: 0 },
+      { q: "AIがもっともらしい嘘をつく現象は？", a: ["ハルシネーション", "イリュージョン"], c: 0 },
+      { q: "低解像度の画像を綺麗に拡大する技術は？", a: ["アップスケーリング", "圧縮"], c: 0 },
+      { q: "画像を元に新しい画像を生成する機能は？", a: ["i2i", "t2t"], c: 0 },
+      { q: "画像生成で同じ構図を保つための数値は？", a: ["シード値", "トークン"], c: 0 },
+      { q: "AIが言葉を処理する単位は？", a: ["トークン", "ピクセル"], c: 0 },
+      { q: "画像や音声を複数扱えるAIは？", a: ["マルチモーダル", "シングルタスク"], c: 0 },
+      { q: "出してほしくない要素を指定するのは？", a: ["ネガティブプロンプト", "削除命令"], c: 0 },
+      { q: "画像の一部を塗りつぶして描き直すのは？", a: ["インペインティング", "自動修正"], c: 0 },
+      { q: "特定の画風に寄せることを何と呼ぶ？", a: ["スタイル転送", "コピー"], c: 0 },
+      { q: "指示通りに動きやすい文章の形は？", a: ["具体的で詳細な指示", "短く抽象的な指示"], c: 0 },
+      { q: "画像の縦横比を変える指示は？", a: ["アスペクト比", "解像度"], c: 0 },
+      { q: "対話を繰り返して磨き上げる工程は？", a: ["イテレーション", "スキャン"], c: 0 },
+      { q: "背景をAIで継ぎ足して広げるのは？", a: ["生成拡張", "ズームアップ"], c: 0 },
+      { q: "日本の法律でAI学習に他人の著作物を？", a: ["原則として許諾なしで使える", "一切禁止"], c: 0 },
+      { q: "AIそのままの画像に著作権は？", a: ["原則認められない", "自動で認められる"], c: 0 },
+      { q: "作家の絵柄をそっくりに真似る行為は？", a: ["倫理的リスクが高い", "推奨される"], c: 0 },
+      { q: "AI作品を投稿する際のマナーは？", a: ["AI利用を明記する", "隠す"], c: 0 },
+      { q: "商用利用（仕事）ができるAIは？", a: ["規約で許可されたもの", "全AIツール"], c: 0 },
+      { q: "自分の手で大幅に加筆した場合の著作権は？", a: ["認められる可能性が高まる", "変わらない"], c: 0 },
+      { q: "企業がAIを導入する際のリスクは？", a: ["機密情報の漏洩", "画面の汚れ"], c: 0 }
+    ];
+
+    let correctCount = 0;
+    let selectedQuestions = [];
+
+    function initQuiz() {
+      selectedQuestions = questionPool.sort(() => 0.5 - Math.random()).slice(0, 3);
+      const container = document.getElementById('quiz-container');
+      container.innerHTML = "";
+      
+      selectedQuestions.forEach((item, idx) => {
+        const qDiv = document.createElement('div');
+        qDiv.innerHTML = `
+          <p class="text-[13px] font-black mb-4 text-slate-800 leading-relaxed">Q${idx+1}. ${item.q}</p>
+          <div class="grid grid-cols-1 gap-2">
+            <button onclick="checkAnswer(${idx}, 0, this)" class="q-btn py-4 px-5 border border-gray-100 text-xs font-bold rounded-lg text-left hover:bg-gray-50 transition-all">${item.a[0]}</button>
+            <button onclick="checkAnswer(${idx}, 1, this)" class="q-btn py-4 px-5 border border-gray-100 text-xs font-bold rounded-lg text-left hover:bg-gray-50 transition-all">${item.a[1]}</button>
+          </div>
+        `;
+        container.appendChild(qDiv);
+      });
+    }
+
+    function checkAnswer(qIdx, choiceIdx, btn) {
+      const item = selectedQuestions[qIdx];
+      const parent = btn.parentElement;
+      if (parent.classList.contains('answered')) return;
+      parent.classList.add('answered');
+
+      if (choiceIdx === item.c) {
+        btn.classList.add('bg-green-600', 'text-white', 'border-green-600');
+        correctCount++;
+      } else {
+        btn.classList.add('bg-red-500', 'text-white', 'border-red-500');
+        // 正解の方をハイライト（親切設計）
+        const otherBtn = parent.children[item.c];
+        otherBtn.classList.add('border-green-600', 'text-green-600');
+      }
+      
+      document.getElementById('score-display').innerText = correctCount;
+      validateForm();
+    }
+
+    // 3. フォームのバリデーション
+    function validateForm() {
+      const ch1 = document.getElementById('ch1').checked;
+      const ch2 = document.getElementById('ch2').checked;
+      const msg = document.getElementById('quiz-status-msg');
+      const btn = document.getElementById('sb-btn');
+      
+      const quizCleared = correctCount >= 2;
+
+      if (quizCleared) {
+        msg.innerText = "✓ クイズクリア！提出可能です";
+        msg.classList.replace('text-red-400', 'text-green-400');
+        msg.classList.replace('bg-red-400/10', 'bg-green-400/10');
+      }
+
+      if (ch1 && ch2 && quizCleared) {
+        btn.classList.remove('btn-disabled');
+      } else {
+        btn.classList.add('btn-disabled');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initQuiz();
+      updateLevel(0);
+    });
+  </script>
+</body>
+</html>
