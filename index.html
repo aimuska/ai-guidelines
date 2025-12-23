@@ -4,34 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>生成AI利用ガイドライン | 東洋美術学校 - 未来のクリエイターのために</title>
-  <meta name="description" content="東洋美術学校の学生および生成AIを学ぶクリエイターのための利用基準です。外部の方へ：本サイトは本校の教育指針を公開し、技術との健全な共生を目指す取り組みを提示するものです。">
-  <meta name="keywords" content="生成AI, ガイドライン, 東洋美術学校, 著作権, AI活用, デザイン教育, 倫理">
+  <title>生成AI利用ガイドライン | 東洋美術学校</title>
+  <meta name="description" content="東洋美術学校が公開する、学生とクリエイターのための生成AI利用基準。技術を正しく理解し、表現の可能性を広げるための指針をまとめています。">
   
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": "生成AI利用ガイドライン",
-    "description": "クリエイターを目指す学生のためのAI活用基準と教育指針",
-    "audience": {
-      "@type": "Audience",
-      "audienceType": "Students, Creators"
-    },
+    "description": "クリエイターを目指す学生とすべての表現者のためのAI活用基準",
     "publisher": {
       "@type": "EducationalOrganization",
-      "name": "東洋美術学校",
-      "url": "https://www.to-bi.ac.jp/"
-    },
-    "mainEntity": {
-      "@type": "ItemList",
-      "name": "AI利用レベル基準",
-      "itemListElement": [
-        {"@type": "ListItem", "position": 1, "name": "Level 0: AIを使わない"},
-        {"@type": "ListItem", "position": 2, "name": "Level 1: ヒントをもらう"},
-        {"@type": "ListItem", "position": 3, "name": "Level 2: 一部に取り入れる"},
-        {"@type": "ListItem", "position": 4, "name": "Level 3: AIを使いこなす"}
-      ]
+      "name": "東洋美術学校"
     }
   }
   </script>
@@ -40,174 +24,116 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap');
-    body { font-family: 'Noto Sans JP', sans-serif; scroll-behavior: smooth; color: #1a1a1a; line-height: 1.7; }
-    .level-card { transition: transform 0.3s ease; border-radius: 4px; }
+    body { font-family: 'Noto Sans JP', sans-serif; scroll-behavior: smooth; color: #1a1a1a; line-height: 1.8; }
+    .level-card { transition: transform 0.3s ease; border-radius: 8px; }
     .level-card:hover { transform: translateY(-5px); }
   </style>
 </head>
-<body class="bg-white">
+<body>
 
   <nav class="border-b border-gray-100 p-6 sticky top-0 bg-white/90 backdrop-blur-md z-50">
     <div class="max-w-6xl mx-auto flex justify-between items-center">
-      <a href="index.html" id="site-logo-link" class="hover:opacity-70 transition-opacity">
+      <a href="index.html" id="site-logo">
         <img src="https://www.to-bi.ac.jp/wp-content/themes/tobi2023/assets/img/common/logo.svg" alt="東洋美術学校" class="h-6 md:h-8">
       </a>
-      <div class="flex items-center gap-6">
-        <span class="hidden md:inline text-[10px] font-black text-gray-400 uppercase tracking-widest">AI Policy 2025</span>
-        <a href="student.html" id="nav-portal-button" class="px-5 py-2.5 bg-slate-900 text-white rounded-full text-xs font-bold hover:bg-blue-600 transition-all shadow-lg shadow-slate-900/10">
-          学生専用：報告ポータル
-        </a>
-      </div>
+      <a href="student.html" id="nav-report-link" class="px-5 py-2.5 bg-slate-900 text-white rounded-full text-xs font-bold hover:bg-blue-600 transition-all shadow-lg">
+        利用報告ポータル
+      </a>
     </div>
   </nav>
 
   <main>
-    <header id="main-visual" class="max-w-4xl mx-auto px-6 py-24 text-center">
-      <p class="text-blue-600 font-bold mb-6 tracking-widest text-sm uppercase">For Students & Creators</p>
+    <header class="max-w-4xl mx-auto px-6 py-20 text-center">
       <h1 class="text-4xl md:text-7xl font-black mb-8 tracking-tighter leading-tight">
         生成AI<br>利用ガイドライン
       </h1>
-      <p class="text-lg font-bold text-gray-500 max-w-2xl mx-auto leading-relaxed">
-        このガイドラインは、東洋美術学校で学ぶ**学生**、そして**生成AIを学びたいすべてのクリエイター**が、技術を正しく理解し、自分の可能性を広げる力にするために策定されました。
-      </p>
+      <div class="space-y-6 text-gray-600 font-medium">
+        <p class="text-lg md:text-xl">
+          このガイドラインは、東洋美術学校で学ぶ学生、そして生成AIを学びたいすべてのクリエイターが、技術を正しく理解し、自分の可能性を広げる力にするために策定されました。
+        </p>
+        <p class="text-sm max-w-2xl mx-auto leading-loose">
+          本校では、生成AIを表現を支える新しい技術として捉えています。クリエイターが著作権や倫理を守りながら、いかにしてAIと共生し、自身の創造性を高めていくべきか。その教育的指針を広く社会に公開しています。
+        </p>
+      </div>
     </header>
 
-    <section id="external-info" class="max-w-3xl mx-auto px-6 py-12 mb-24 bg-blue-50 rounded-2xl border border-blue-100 mx-6 md:mx-auto">
-      <h2 class="text-sm font-black text-blue-900 mb-4 flex items-center gap-2">
-        <i data-lucide="info" size="18"></i> このサイトの目的（外部の方へ）
-      </h2>
-      <p class="text-xs text-blue-800 leading-loose font-medium">
-        本校では、生成AIを表現を支える新しい技術として捉えています。クリエイターが著作権や倫理を守りながら、いかにしてAIと共生し、自身の創造性を高めていくべきか。その教育的指針を広く社会に公開しています。
-      </p>
-    </section>
-
-    <section id="usage-levels-definition" class="max-w-6xl mx-auto px-6 pb-24">
-      <h2 class="sr-only">AI利用レベルの定義</h2>
+    <section id="guideline-levels" class="max-w-6xl mx-auto px-6 pb-24">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <article class="level-card p-8 bg-slate-50 border-t-8 border-red-600">
+        <article class="level-card p-8 bg-slate-50 border-t-8 border-red-600 shadow-sm">
           <span class="text-4xl font-black italic text-red-600/20">0</span>
           <h3 class="text-xl font-black mt-4 mb-4">AIを使わない</h3>
-          <p class="text-xs text-gray-500 font-bold leading-relaxed">アナログ技術や造形の基礎を身体で覚える段階です。AIツールの使用を一切禁止します。</p>
+          <p class="text-xs text-gray-500 font-bold">アナログ技術や造形の基礎を身体で覚える段階です。AIツールの使用を一切禁止します。</p>
         </article>
-        <article class="level-card p-8 bg-slate-50 border-t-8 border-blue-600">
+        <article class="level-card p-8 bg-slate-50 border-t-8 border-blue-600 shadow-sm">
           <span class="text-4xl font-black italic text-blue-600/20">1</span>
           <h3 class="text-xl font-black mt-4 mb-4">ヒントをもらう</h3>
-          <p class="text-xs text-gray-500 font-bold leading-relaxed">アイデアの断片を探したり、文章の構成を相談するために活用します。AIの生成物をそのまま作品にはしません。</p>
+          <p class="text-xs text-gray-500 font-bold">アイデアの断片を探したり、文章の構成を相談するために活用します。AIの生成物をそのまま作品にはしません。</p>
         </article>
-        <article class="level-card p-8 bg-slate-50 border-t-8 border-indigo-600">
+        <article class="level-card p-8 bg-slate-50 border-t-8 border-indigo-600 shadow-sm">
           <span class="text-4xl font-black italic text-indigo-600/20">2</span>
           <h3 class="text-xl font-black mt-4 mb-4">一部に取り入れる</h3>
-          <p class="text-xs text-gray-500 font-bold leading-relaxed">テクスチャや背景の一部をAIで生成します。人間による大幅な加筆・加工・再構成が必須条件です。</p>
+          <p class="text-xs text-gray-500 font-bold">テクスチャや背景の一部をAIで生成します。人間による大幅な加筆・加工・再構成が必須条件です。</p>
         </article>
-        <article class="level-card p-8 bg-slate-50 border-t-8 border-purple-600">
+        <article class="level-card p-8 bg-slate-50 border-t-8 border-purple-600 shadow-sm">
           <span class="text-4xl font-black italic text-purple-600/20">3</span>
           <h3 class="text-xl font-black mt-4 mb-4">AIを使いこなす</h3>
-          <p class="text-xs text-gray-500 font-bold leading-relaxed">AIを表現のメインツールとして使用します。プロンプトの制御や、完成までのディレクション力を評価します。</p>
+          <p class="text-xs text-gray-500 font-bold">AIを表現のメインツールとして使用します。プロンプトの制御や、完成までのディレクション力を評価します。</p>
         </article>
       </div>
     </section>
 
-    <section id="guideline-principles" class="bg-slate-900 text-white p-10 md:p-20 rounded-sm mb-24">
+    <section id="core-principles" class="bg-slate-900 text-white p-12 md:p-24 mb-24">
       <div class="max-w-6xl mx-auto">
-        <h2 class="text-3xl font-black mb-12 tracking-tight">大切にしてほしい3つの心得</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <h2 class="text-3xl font-black mb-16 tracking-tight text-center md:text-left">大切にしてほしい3つの心得</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-16">
           <article>
-            <h3 class="text-blue-400 font-black mb-4 flex items-center gap-2"><i data-lucide="eye"></i> 透明性の確保</h3>
+            <h3 class="text-blue-400 font-black mb-4 flex items-center gap-2 text-xl"><i data-lucide="eye"></i> 透明性の確保</h3>
             <p class="text-slate-400 text-sm leading-relaxed">AIをどの工程で、どのツールを使って使用したかを明確にしましょう。制作プロセスの記録は、あなたの実力を証明する材料になります。</p>
           </article>
           <article>
-            <h3 class="text-blue-400 font-black mb-4 flex items-center gap-2"><i data-lucide="shield-check"></i> 権利の尊重</h3>
+            <h3 class="text-blue-400 font-black mb-4 flex items-center gap-2 text-xl"><i data-lucide="shield-check"></i> 権利の尊重</h3>
             <p class="text-slate-400 text-sm leading-relaxed">他者の著作権や作風を侵害しないよう、細心の注意を払いましょう。特定の作家に似せすぎる行為は、クリエイターとして避けるべきです。</p>
           </article>
           <article>
-            <h3 class="text-blue-400 font-black mb-4 flex items-center gap-2"><i data-lucide="user-check"></i> 責任は自分にある</h3>
-            <p class="text-slate-400 text-sm leading-relaxed">AIが何を出力したとしても、それを「自分の作品」として世に出す以上、その結果に対する責任はすべて制作者本人が負うものとします。</p>
+            <h3 class="text-blue-400 font-black mb-4 flex items-center gap-2 text-xl"><i data-lucide="user-check"></i> 責任は自分にある</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">AIが何を出力したとしても、それを自分の作品として世に出す以上、その結果に対する責任はすべて制作者本人が負うものとします。</p>
           </article>
         </div>
       </div>
     </section>
 
     <section id="faq-section" class="max-w-3xl mx-auto mb-24 px-6">
-      <h2 class="text-2xl font-black mb-10 text-center tracking-tight">よくある質問</h2>
+      <h2 class="text-2xl font-black mb-12 text-center tracking-tight">よくある質問</h2>
       <div class="space-y-4">
-        <details class="group bg-slate-50">
-          <summary class="list-none p-6 cursor-pointer flex justify-between items-center font-bold text-sm">
-            Q1. どのAIツールを使っても良いですか？<i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i>
-          </summary>
-          <div class="p-6 pt-0 text-xs text-gray-500 border-t border-white">商用利用が許可されており、学校の基準を満たすものを推奨します。</div>
-        </details>
-        <details class="group bg-slate-50">
-          <summary class="list-none p-6 cursor-pointer flex justify-between items-center font-bold text-sm">
-            Q2. AI生成物に著作権は発生しますか？<i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i>
-          </summary>
-          <div class="p-6 pt-0 text-xs text-gray-500 border-t border-white">人間が大幅に加筆・修正を行うことで、著作物として認められる可能性が高まります。</div>
-        </details>
-        <details class="group bg-slate-50">
-          <summary class="list-none p-6 cursor-pointer flex justify-between items-center font-bold text-sm">
-            Q3. プロンプトの提出は必要ですか？<i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i>
-          </summary>
-          <div class="p-6 pt-0 text-xs text-gray-500 border-t border-white">はい。制作プロセスを透明にするため、履歴を記録しておくことが求められます。</div>
-        </details>
-        <details class="group bg-slate-50">
-          <summary class="list-none p-6 cursor-pointer flex justify-between items-center font-bold text-sm">
-            Q4. AI使用を隠しても良いですか？<i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i>
-          </summary>
-          <div class="p-6 pt-0 text-xs text-gray-500 border-t border-white">厳禁です。虚偽の報告は評価の対象外となり、指導の対象となります。</div>
-        </details>
-        <details class="group bg-slate-50">
-          <summary class="list-none p-6 cursor-pointer flex justify-between items-center font-bold text-sm">
-            Q5. 特定の画風を真似るプロンプトはOK？<i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i>
-          </summary>
-          <div class="p-6 pt-0 text-xs text-gray-500 border-t border-white">倫理的リスクが高いため、本校では推奨しません。</div>
-        </details>
-        <details class="group bg-slate-50">
-          <summary class="list-none p-6 cursor-pointer flex justify-between items-center font-bold text-sm">
-            Q6. レベル設定は誰が決めるのですか？<i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i>
-          </summary>
-          <div class="p-6 pt-0 text-xs text-gray-500 border-t border-white">各授業の担当講師が、課題の目的に合わせて設定します。</div>
-        </details>
-        <details class="group bg-slate-50">
-          <summary class="list-none p-6 cursor-pointer flex justify-between items-center font-bold text-sm">
-            Q7. 個人所有のデバイスでの利用は？<i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i>
-          </summary>
-          <div class="p-6 pt-0 text-xs text-gray-500 border-t border-white">はい。課題に関わるすべてのプロセスが対象となります。</div>
-        </details>
-        <details class="group bg-slate-50">
-          <summary class="list-none p-6 cursor-pointer flex justify-between items-center font-bold text-sm">
-            Q8. 文章をそのままレポートに使えますか？<i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i>
-          </summary>
-          <div class="p-6 pt-0 text-xs text-gray-500 border-t border-white">原則不可です。自分の言葉で再構成し、事実を確認してください。</div>
-        </details>
-        <details class="group bg-slate-50">
-          <summary class="list-none p-6 cursor-pointer flex justify-between items-center font-bold text-sm">
-            Q9. 著作権侵害のチェック方法は？<i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i>
-          </summary>
-          <div class="p-6 pt-0 text-xs text-gray-500 border-t border-white">画像検索や権利確認ツールを用いてセルフチェックを行ってください。</div>
-        </details>
-        <details class="group bg-slate-50">
-          <summary class="list-none p-6 cursor-pointer flex justify-between items-center font-bold text-sm">
-            Q10. ガイドラインは更新されますか？<i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i>
-          </summary>
-          <div class="p-6 pt-0 text-xs text-gray-500 border-t border-white">はい。技術や法整備に合わせて定期的にアップデートされます。</div>
-        </details>
+        <details class="group bg-slate-50"><summary class="list-none p-6 cursor-pointer flex justify-between items-center font-bold text-sm">Q1. どのAIツールを使っても良いですか？<i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i></summary><div class="p-6 pt-0 text-xs text-gray-500 border-t border-white">商用利用が許可されており、学校の基準を満たすものを推奨します。</div></details>
+        <details class="group bg-slate-50"><summary class="list-none p-6 cursor-pointer flex justify-between items-center font-bold text-sm">Q2. AI生成物に著作権は発生しますか？<i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i></summary><div class="p-6 pt-0 text-xs text-gray-500 border-t border-white">人間が大幅に加筆・修正を行うことで、著作物として認められる可能性が高まります。</div></details>
+        <details class="group bg-slate-50"><summary class="list-none p-6 cursor-pointer flex justify-between items-center font-bold text-sm">Q3. プロンプトの提出は必要ですか？<i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i></summary><div class="p-6 pt-0 text-xs text-gray-500 border-t border-white">はい。制作プロセスを透明にするため、履歴を記録しておくことが求められます。</div></details>
+        <details class="group bg-slate-50"><summary class="list-none p-6 cursor-pointer flex justify-between items-center font-bold text-sm">Q4. AI使用を隠しても良いですか？<i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i></summary><div class="p-6 pt-0 text-xs text-gray-500 border-t border-white">厳禁です。虚偽の報告は評価の対象外となり、指導の対象となります。</div></details>
+        <details class="group bg-slate-50"><summary class="list-none p-6 cursor-pointer flex justify-between items-center font-bold text-sm">Q5. 特定の画風を真似るプロンプトはOK？<i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i></summary><div class="p-6 pt-0 text-xs text-gray-500 border-t border-white">倫理的リスクが高いため、本校では推奨しません。</div></details>
+        <details class="group bg-slate-50"><summary class="list-none p-6 cursor-pointer flex justify-between items-center font-bold text-sm">Q6. レベル設定は誰が決めるのですか？<i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i></summary><div class="p-6 pt-0 text-xs text-gray-500 border-t border-white">各授業の担当講師が、課題の目的に合わせて設定します。</div></details>
+        <details class="group bg-slate-50"><summary class="list-none p-6 cursor-pointer flex justify-between items-center font-bold text-sm">Q7. 個人所有のデバイスでの利用は？<i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i></summary><div class="p-6 pt-0 text-xs text-gray-500 border-t border-white">はい。課題に関わるすべてのプロセスが対象となります。</div></details>
+        <details class="group bg-slate-50"><summary class="list-none p-6 cursor-pointer flex justify-between items-center font-bold text-sm">Q8. 文章をそのままレポートに使えますか？<i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i></summary><div class="p-6 pt-0 text-xs text-gray-500 border-t border-white">原則不可です。自分の言葉で再構成し、事実を確認してください。</div></details>
+        <details class="group bg-slate-50"><summary class="list-none p-6 cursor-pointer flex justify-between items-center font-bold text-sm">Q9. 著作権侵害のチェック方法は？<i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i></summary><div class="p-6 pt-0 text-xs text-gray-500 border-t border-white">画像検索や権利確認ツールを用いてセルフチェックを行ってください。</div></details>
+        <details class="group bg-slate-50"><summary class="list-none p-6 cursor-pointer flex justify-between items-center font-bold text-sm">Q10. ガイドラインは更新されますか？<i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i></summary><div class="p-6 pt-0 text-xs text-gray-500 border-t border-white">はい。技術や法整備に合わせて定期的にアップデートされます。</div></details>
       </div>
     </section>
 
-    <section id="report-portal-cta" class="bg-slate-900 text-white p-12 md:p-20 text-center rounded-sm mx-6 md:mx-0">
-      <h2 class="text-3xl font-black mb-6 tracking-tight">活用を報告する（学生の方）</h2>
-      <p class="text-slate-400 mb-10 text-sm leading-relaxed">
-        課題でAIを使用した場合は、報告が必要です。<br>
-        まずは下のボタンから、ルールの確認（クイズ）に進んでください。
-      </p>
-      <a href="student.html" id="btn-start-quiz" class="inline-flex items-center gap-3 px-12 py-5 bg-blue-600 text-white font-bold rounded-sm hover:bg-blue-500 transition-all no-underline shadow-xl shadow-blue-600/20">
-        <i data-lucide="check-square"></i> ルールの確認と報告へ進む
-      </a>
+    <section id="cta-portal" class="max-w-4xl mx-auto mb-24 px-6 text-center">
+      <div class="bg-blue-600 text-white p-12 md:p-20 rounded-3xl shadow-2xl shadow-blue-600/20">
+        <h2 class="text-3xl font-black mb-6">利用を報告する</h2>
+        <p class="mb-10 text-blue-100 font-medium leading-relaxed">
+          授業や課題でAIを活用した方は、<br>
+          こちらのポータルからルール確認と報告を行ってください。
+        </p>
+        <a href="student.html" class="inline-flex items-center gap-3 px-10 py-5 bg-white text-blue-600 font-black rounded-full hover:bg-slate-100 transition-all no-underline shadow-lg">
+          <i data-lucide="clipboard-check"></i> ルールの確認と報告へ
+        </a>
+      </div>
     </section>
   </main>
 
-  <footer id="site-footer" class="border-t border-gray-100 py-16 text-center">
-    <p class="text-[10px] text-gray-400 font-bold tracking-[0.2em] uppercase mb-4">Toyo Institute of Art and Design</p>
-    <p class="text-[9px] text-gray-300">© 2025 AI Guidelines Project. All Rights Reserved.</p>
+  <footer class="border-t border-gray-100 py-16 text-center">
+    <p class="text-[10px] text-gray-400 font-bold tracking-[0.2em] uppercase">Toyo Institute of Art and Design</p>
   </footer>
 
   <script>lucide.createIcons();</script>
