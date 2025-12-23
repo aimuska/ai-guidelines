@@ -3,15 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ルールの確認（クイズ） | 生成AI利用ガイドライン</title>
-  <meta name="description" content="生成AIを正しく使うための理解度チェックページです。合格すると報告フォームに進めます。">
-
+  <title>ルールの確認 | AI利用ガイドライン</title>
+  <meta name="description" content="AIを正しく使うための理解度チェックです。合格すると報告フォームに進めます。">
+  
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Quiz",
-    "name": "AI利用ルール確認テスト",
-    "educationalLevel": "専門学校生向け"
+    "name": "AI利用ルール確認テスト"
   }
   </script>
 
@@ -20,47 +19,97 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap');
     body { font-family: 'Noto Sans JP', sans-serif; background: #fdfdfd; }
+    .answered { pointer-events: none; }
   </style>
 </head>
 <body class="min-h-screen">
 
   <nav class="p-6 border-b border-gray-100 bg-white/80 backdrop-blur-md">
     <div class="max-w-2xl mx-auto flex justify-between items-center">
-      <a href="index.html" class="font-black text-blue-600 text-lg tracking-tight">AIガイドライン</a>
-      <a href="index.html" class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">TOPに戻る</a>
+      <a href="index.html" class="font-black text-blue-600">AIガイドライン</a>
+      <a href="index.html" class="text-[10px] font-bold text-gray-400 uppercase">戻る</a>
     </div>
   </nav>
 
   <main class="max-w-2xl mx-auto px-6 py-10">
-    <header class="text-center mb-12">
-      <h1 class="text-3xl font-black mb-4 tracking-tight">理解度チェック</h1>
-      <p class="text-gray-500 text-sm">報告を始める前に、2問正解してルールを確認しましょう。</p>
+    <header id="quiz-header" class="text-center mb-12">
+      <h1 class="text-3xl font-black mb-4">理解度チェック</h1>
+      <p class="text-gray-500 text-sm">3問中2問以上正解で報告が可能になります。</p>
     </header>
 
-    <div id="quiz-container" class="space-y-6">
-      </div>
+    <div id="quiz-stack" class="space-y-6"></div>
 
-    <section id="quiz-status" class="mt-10 p-6 bg-white border border-gray-100 rounded-2xl shadow-sm text-center">
-      <p class="text-xs font-bold text-gray-400 mb-2 uppercase tracking-widest">現在の状況</p>
-      <div id="status-badge" class="inline-block px-4 py-1 bg-red-100 text-red-600 text-[10px] font-bold rounded-full mb-4">
-        ロック中
-      </div>
+    <section id="retry-area" class="mt-8 text-center hidden">
+      <p class="text-red-500 font-bold mb-4">もう一度挑戦してください</p>
+      <button onclick="initQuiz()" class="px-8 py-4 bg-slate-900 text-white rounded-full font-bold text-xs">RETRY</button>
+    </section>
+
+    <section id="status-board" class="mt-10 p-6 bg-white border rounded-2xl text-center">
+      <div id="status-badge" class="inline-block px-4 py-1 bg-red-100 text-red-600 text-[10px] font-bold rounded-full mb-4 uppercase">Locked</div>
       <div class="flex justify-center items-baseline gap-2">
-        <span id="score-now" class="text-4xl font-black">0</span>
-        <span class="text-gray-300 font-bold">/ 2 正解</span>
+        <span id="score-display" class="text-4xl font-black">0</span><span class="text-gray-300">/ 2 正解</span>
       </div>
     </section>
 
-    <section id="report-form-area" class="mt-10 relative opacity-50 grayscale pointer-events-none transition-all duration-500">
-      <div class="bg-slate-900 text-white p-8 rounded-2xl">
-        <h2 class="text-xl font-black mb-6">報告フォームへ進む</h2>
-        <a href="https://docs.google.com/forms/..." id="final-report-link" class="block w-full py-4 bg-blue-600 text-center font-bold rounded-xl shadow-lg hover:bg-blue-500 transition-all">
-          Googleフォームを開く
-        </a>
+    <section id="form-area" class="mt-10 opacity-30 grayscale pointer-events-none transition-all">
+      <div class="bg-slate-900 text-white p-8 rounded-2xl text-center">
+        <h2 class="text-xl font-black mb-6">報告フォームを開く</h2>
+        <a href="https://docs.google.com/forms/..." class="block w-full py-4 bg-blue-600 rounded-xl font-bold">フォームへ進む</a>
       </div>
     </section>
   </main>
 
-  <script>lucide.createIcons();</script>
+  <script>
+    const quizPool = [
+      { q: "Level 0の設定では、AIツールを使ってもよい？", a: ["使ってはいけない", "少しならよい", "講師に黙っていればよい"], c: 0 },
+      { q: "AIが作ったものをそのまま提出できるのはどのレベル？", a: ["Level 0", "Level 1", "どのレベルも原則不可（加工が必要）"], c: 2 },
+      { q: "他者の画風をそっくりに真似るプロンプトは？", a: ["推奨される", "倫理的リスクがあるため避けるべき", "積極的に使うべき"], c: 1 },
+      { q: "AIを利用した際、報告は必要？", a: ["必要", "不要", "どっちでもいい"], c: 0 },
+      { q: "AIが生成した内容に誤りがあった時の責任は？", a: ["AIの開発元", "自分自身", "学校"], c: 1 }
+      // ... 必要に応じて25問まで追加可能
+    ];
+
+    let score = 0;
+    function initQuiz() {
+      score = 0;
+      document.getElementById('score-display').innerText = "0";
+      document.getElementById('retry-area').classList.add('hidden');
+      const stack = document.getElementById('quiz-stack');
+      stack.innerHTML = '';
+      
+      const shuffled = quizPool.sort(() => 0.5 - Math.random()).slice(0, 3);
+      shuffled.forEach((data, i) => {
+        const art = document.createElement('article');
+        art.className = "bg-white p-6 border border-gray-100 rounded-xl shadow-sm";
+        art.innerHTML = `<h3 class="font-bold mb-4">Q${i+1}. ${data.q}</h3><div class="grid gap-2">` + 
+          data.a.map((ans, idx) => `<button onclick="check(${i}, ${idx}, ${data.c}, this)" class="text-left p-3 border rounded-lg text-sm hover:bg-blue-50">${ans}</button>`).join('') + `</div>`;
+        stack.appendChild(art);
+      });
+    }
+
+    function check(qIdx, choice, correct, btn) {
+      const parent = btn.parentElement;
+      parent.classList.add('answered');
+      if(choice === correct) {
+        btn.classList.add('bg-green-100', 'border-green-500');
+        score++;
+      } else {
+        btn.classList.add('bg-red-100', 'border-red-500');
+      }
+      document.getElementById('score-display').innerText = score;
+      if(score >= 2) {
+        document.getElementById('form-area').classList.remove('opacity-30', 'grayscale', 'pointer-events-none');
+        document.getElementById('status-badge').innerText = "Unlocked";
+        document.getElementById('status-badge').className = "inline-block px-4 py-1 bg-green-100 text-green-600 text-[10px] font-bold rounded-full mb-4 uppercase";
+      }
+      // 全問回答後に2点未満ならリトライ表示
+      if(document.querySelectorAll('.answered').length === 3 && score < 2) {
+        document.getElementById('retry-area').classList.remove('hidden');
+      }
+    }
+
+    window.onload = initQuiz;
+    lucide.createIcons();
+  </script>
 </body>
 </html>
