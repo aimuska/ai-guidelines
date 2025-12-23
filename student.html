@@ -3,244 +3,64 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI SKILL CHECK | CREATIVE PORTAL</title>
+  <title>ルールの確認（クイズ） | 生成AI利用ガイドライン</title>
+  <meta name="description" content="生成AIを正しく使うための理解度チェックページです。合格すると報告フォームに進めます。">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Quiz",
+    "name": "AI利用ルール確認テスト",
+    "educationalLevel": "専門学校生向け"
+  }
+  </script>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Noto+Sans+JP:wght@400;700;900&display=swap');
-    
-    body { 
-      background-color: #f8fafc; 
-      font-family: 'Noto Sans JP', sans-serif; 
-      color: #1a1a1a;
-      overflow-x: hidden;
-    }
-    .font-eng { font-family: 'Plus Jakarta Sans', sans-serif; }
-    .bg-gradient-mesh {
-      background: radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.1) 0, transparent 50%),
-                  radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.1) 0, transparent 50%);
-    }
-    .quiz-card { transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
-    @keyframes bounce-subtle {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-5px); }
-    }
-    .correct-anim { animation: bounce-subtle 0.5s ease; }
-    .lock-overlay { backdrop-filter: blur(8px); background: rgba(15, 23, 42, 0.8); transition: all 0.6s ease; }
-    .btn-disabled { opacity: 0.2; pointer-events: none; filter: grayscale(1); }
-    .answered { pointer-events: none; }
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap');
+    body { font-family: 'Noto Sans JP', sans-serif; background: #fdfdfd; }
   </style>
 </head>
-<body class="bg-gradient-mesh min-h-screen pb-20">
+<body class="min-h-screen">
 
-  <header class="p-6 flex justify-between items-center">
-    <div class="flex items-center gap-2">
-      <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white">
-        <i data-lucide="zap" size="18"></i>
-      </div>
-      <span class="font-eng font-800 tracking-tighter text-xl text-slate-900">AI PORTAL</span>
+  <nav class="p-6 border-b border-gray-100 bg-white/80 backdrop-blur-md">
+    <div class="max-w-2xl mx-auto flex justify-between items-center">
+      <a href="index.html" class="font-black text-blue-600 text-lg tracking-tight">AIガイドライン</a>
+      <a href="index.html" class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">TOPに戻る</a>
     </div>
-    <a href="index.html" class="text-[10px] font-bold text-gray-400 hover:text-blue-600 transition-colors uppercase tracking-widest no-underline">Guide Line</a>
-  </header>
+  </nav>
 
-  <main class="max-w-2xl mx-auto px-6">
-    
-    <section class="text-center py-10">
-      <h1 class="font-eng font-800 text-5xl md:text-6xl mb-4 tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 uppercase">
-        Mission:<br>Skill Check
-      </h1>
-      <p class="text-gray-500 text-sm font-bold">2問以上正解して、報告フォームをアンロックせよ。</p>
+  <main class="max-w-2xl mx-auto px-6 py-10">
+    <header class="text-center mb-12">
+      <h1 class="text-3xl font-black mb-4 tracking-tight">理解度チェック</h1>
+      <p class="text-gray-500 text-sm">報告を始める前に、2問正解してルールを確認しましょう。</p>
+    </header>
+
+    <div id="quiz-container" class="space-y-6">
+      </div>
+
+    <section id="quiz-status" class="mt-10 p-6 bg-white border border-gray-100 rounded-2xl shadow-sm text-center">
+      <p class="text-xs font-bold text-gray-400 mb-2 uppercase tracking-widest">現在の状況</p>
+      <div id="status-badge" class="inline-block px-4 py-1 bg-red-100 text-red-600 text-[10px] font-bold rounded-full mb-4">
+        ロック中
+      </div>
+      <div class="flex justify-center items-baseline gap-2">
+        <span id="score-now" class="text-4xl font-black">0</span>
+        <span class="text-gray-300 font-bold">/ 2 正解</span>
+      </div>
     </section>
 
-    <div id="quiz-stack" class="space-y-6">
-      </div>
-
-    <div id="retry-area" class="mt-8 text-center hidden">
-      <p id="retry-msg" class="text-red-500 font-black text-sm mb-4 italic uppercase tracking-widest">Mission Failed...</p>
-      <button onclick="init()" class="px-8 py-4 bg-slate-900 text-white rounded-full font-black text-xs tracking-widest flex items-center gap-2 mx-auto hover:bg-blue-600 transition-all active:scale-95 shadow-lg">
-        <i data-lucide="refresh-cw" size="14"></i>
-        RETRY MISSION
-      </button>
-    </div>
-
-    <div class="mt-10 flex justify-center">
-      <div class="bg-white px-8 py-4 rounded-full shadow-xl shadow-blue-500/10 flex items-center gap-6 border border-blue-50">
-        <div class="text-center">
-          <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest">Status</p>
-          <p id="status-text" class="text-xs font-bold text-red-500">LOCKED</p>
-        </div>
-        <div class="h-8 w-[1px] bg-gray-100"></div>
-        <div class="text-center">
-          <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest font-eng">Score</p>
-          <div class="flex items-baseline gap-1">
-            <span id="score-display" class="text-2xl font-black font-eng">0</span>
-            <span class="text-gray-300 font-bold text-sm">/ 2</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="mt-12 relative">
-      <div id="form-lock" class="absolute inset-0 z-20 lock-overlay rounded-3xl flex flex-col items-center justify-center text-white p-8">
-        <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mb-4 border border-white/20">
-          <i data-lucide="lock" class="text-white"></i>
-        </div>
-        <p class="font-bold text-sm tracking-widest uppercase font-eng">Form Locked</p>
-        <p class="text-[10px] text-white/50 mt-2 italic text-center leading-relaxed">全ての試練を乗り越えた者にのみ、<br>報告の権利が与えられる。</p>
-      </div>
-
-      <div class="bg-white border-2 border-gray-100 p-8 md:p-12 rounded-3xl shadow-sm relative z-10">
-        <div class="flex items-center gap-3 mb-8">
-          <div class="w-10 h-10 bg-green-50 text-green-600 rounded-xl flex items-center justify-center">
-            <i data-lucide="send"></i>
-          </div>
-          <h2 class="text-xl font-900 tracking-tight">Report Form</h2>
-        </div>
-
-        <div class="space-y-4 mb-10">
-          <label class="flex items-center p-5 bg-gray-50 rounded-2xl cursor-pointer hover:bg-gray-100 transition-all border border-transparent hover:border-blue-200">
-            <input type="checkbox" id="c1" onchange="validateFinal()" class="w-6 h-6 rounded-lg accent-blue-600">
-            <div class="ml-4">
-              <p class="font-bold text-sm">利用レベルの遵守</p>
-              <p class="text-[10px] text-gray-400">指定条件を超えない範囲で制作しました</p>
-            </div>
-          </label>
-          <label class="flex items-center p-5 bg-gray-50 rounded-2xl cursor-pointer hover:bg-gray-100 transition-all border border-transparent hover:border-blue-200">
-            <input type="checkbox" id="c2" onchange="validateFinal()" class="w-6 h-6 rounded-lg accent-blue-600">
-            <div class="ml-4">
-              <p class="font-bold text-sm">プロセスの保存</p>
-              <p class="text-[10px] text-gray-400">AIとの対話ログや下書きを保管しました</p>
-            </div>
-          </label>
-        </div>
-
-        <a id="submit-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSemcECAgiQRrN2u7wyMktHhJIyaH_XZsmoiHkCreGXR-KmcrQ/viewform?usp=sf_link" target="_blank" 
-           class="btn-disabled block w-full py-5 bg-blue-600 text-white font-black rounded-2xl text-center no-underline shadow-xl shadow-blue-600/30 hover:scale-[1.02] transition-all font-eng tracking-widest text-lg uppercase italic">
-          Send Mission Report
+    <section id="report-form-area" class="mt-10 relative opacity-50 grayscale pointer-events-none transition-all duration-500">
+      <div class="bg-slate-900 text-white p-8 rounded-2xl">
+        <h2 class="text-xl font-black mb-6">報告フォームへ進む</h2>
+        <a href="https://docs.google.com/forms/..." id="final-report-link" class="block w-full py-4 bg-blue-600 text-center font-bold rounded-xl shadow-lg hover:bg-blue-500 transition-all">
+          Googleフォームを開く
         </a>
       </div>
-    </div>
+    </section>
   </main>
 
-  <script>
-    lucide.createIcons();
-
-    const pool = [
-      { q: "AIへの指示文（Prompt）は、具体的であるほど精度が上がる？", a: ["Yes", "No"], c: 0 },
-      { q: "AIが事実とは異なる情報を生成することを何と呼ぶ？", a: ["ハルシネーション", "ゴースト"], c: 0 },
-      { q: "画像を元にAIで加工を行う手法を何と呼ぶ？", a: ["i2i", "t2t"], c: 0 },
-      { q: "AI生成物に日本の著作権が認められるには何が必要？", a: ["創作的寄与（人の手）", "課金プラン"], c: 0 },
-      { q: "PhotoshopでAIを使って背景を広げる機能は？", a: ["生成拡張", "パッチ"], c: 0 },
-      { q: "低解像度の画像をAIで綺麗にすることを？", a: ["アップスケーリング", "圧縮"], c: 0 },
-      { q: "画像生成で「出してほしくない要素」を指示するのは？", a: ["ネガティブプロンプト", "除外レイヤー"], c: 0 },
-      { q: "AIに入力した内容が学習に使われるのを拒否する設定は？", a: ["オプトアウト", "サインアウト"], c: 0 },
-      { q: "ChatGPTのような文字を生成するAIの正体は？", a: ["LLM（大規模言語モデル）", "OCR"], c: 0 },
-      { q: "AI画像の一部だけを塗りつぶして描き直す機能は？", a: ["インペインティング", "アウトペイント"], c: 0 },
-      { q: "画像生成で同じ構図を何度も出すための数値は？", a: ["シード（Seed）値", "ピクセル値"], c: 0 },
-      { q: "画像・文章・音声など複数の情報を扱えるAIは？", a: ["マルチモーダル", "バイリンガル"], c: 0 },
-      { q: "AIが文章を処理する時に区切る単位を何と呼ぶ？", a: ["トークン", "バイト"], c: 0 },
-      { q: "「--ar 16:9」のように指定する画像の比率を？", a: ["アスペクト比", "コントラスト比"], c: 0 },
-      { q: "AIとの対話を通じて結果を改善していく工程を？", a: ["イテレーション", "スキャン"], c: 0 },
-      { q: "日本の法律（30条の4）で、AIの学習に著作物を？", a: ["原則として許諾なしで使える", "一切禁止されている"], c: 0 },
-      { q: "仕事でAIを使う際に、まず確認すべき最重要事項は？", a: ["ツールの利用規約", "AIのバージョン"], c: 0 },
-      { q: "Adobe Fireflyが学習データとして使っているのは？", a: ["Adobe Stock等（著作権OK）", "SNSの無断転載画像"], c: 0 },
-      { q: "作家の絵柄をそっくりに真似て、本人のように装う行為は？", a: ["倫理的リスクが高い", "最新の推奨手法"], c: 0 },
-      { q: "AI生成物に自分の手で大幅な加筆修正を加えたら著作権は？", a: ["認められる可能性が高まる", "一切認められない"], c: 0 },
-      { q: "企業秘や個人情報をAIに入力する際のリスクは？", a: ["情報が漏洩・学習される", "PCが重くなる"], c: 0 },
-      { q: "生成AIは「検索エンジン」と同じ仕組みである？", a: ["No（確率で言葉を繋ぐ）", "Yes（検索結果を出す）"], c: 0 },
-      { q: "AIを「パートナー（翼）」として使いこなす姿勢は？", a: ["推奨される", "禁止されている"], c: 0 },
-      { q: "AIで制作したものをSNSに投稿する際のマナーは？", a: ["AI使用を明記する", "隠す"], c: 0 },
-      { q: "Midjourneyなどのツールが主に動作するアプリは？", a: ["Discord", "LINE"], c: 0 }
-    ];
-
-    let score = 0;
-    let answeredCount = 0;
-    let selected = [];
-
-    function init() {
-      // リセット
-      score = 0;
-      answeredCount = 0;
-      document.getElementById('score-display').innerText = "0";
-      document.getElementById('retry-area').classList.add('hidden');
-      document.getElementById('status-text').innerText = "LOCKED";
-      document.getElementById('status-text').classList.replace('text-green-500', 'text-red-500');
-      document.getElementById('form-lock').style.opacity = "1";
-      document.getElementById('form-lock').style.pointerEvents = "auto";
-      document.getElementById('form-lock').style.transform = "translateY(0)";
-      
-      // 25問からランダムに3問選ぶ
-      selected = pool.sort(() => 0.5 - Math.random()).slice(0, 3);
-      const stack = document.getElementById('quiz-stack');
-      stack.innerHTML = "";
-      selected.forEach((item, i) => {
-        const card = document.createElement('div');
-        card.className = "quiz-card bg-white p-6 rounded-2xl border border-gray-100 shadow-sm";
-        card.innerHTML = `
-          <p class="text-[10px] font-black text-blue-600 uppercase tracking-[0.2em] mb-2 font-eng">Question 0${i+1}</p>
-          <h3 class="font-bold text-slate-800 mb-6 leading-relaxed text-sm">${item.q}</h3>
-          <div class="grid grid-cols-2 gap-3">
-            <button onclick="ans(${i},0,this)" class="py-4 rounded-xl border-2 border-gray-50 font-bold text-xs hover:border-blue-100 transition-all">${item.a[0]}</button>
-            <button onclick="ans(${i},1,this)" class="py-4 rounded-xl border-2 border-gray-50 font-bold text-xs hover:border-blue-100 transition-all">${item.a[1]}</button>
-          </div>
-        `;
-        stack.appendChild(card);
-      });
-      lucide.createIcons();
-    }
-
-    function ans(qIdx, aIdx, btn) {
-      const p = btn.parentElement;
-      if(p.classList.contains('answered')) return;
-      p.classList.add('answered');
-      answeredCount++;
-      
-      const isCorrect = aIdx === selected[qIdx].c;
-      if(isCorrect) {
-        btn.classList.add('bg-blue-600', 'text-white', 'border-blue-600', 'correct-anim');
-        score++;
-      } else {
-        btn.classList.add('bg-red-500', 'text-white', 'border-red-500');
-        p.children[selected[qIdx].c].classList.add('border-blue-600', 'text-blue-600');
-      }
-      
-      document.getElementById('score-display').innerText = score;
-
-      // 3問全て回答し終わった判定
-      if (answeredCount === 3) {
-        setTimeout(checkFinalResult, 500);
-      }
-    }
-
-    function checkFinalResult() {
-      if(score >= 2) {
-        // 合格
-        document.getElementById('status-text').innerText = "UNLOCKED";
-        document.getElementById('status-text').classList.replace('text-red-500', 'text-green-500');
-        document.getElementById('form-lock').style.opacity = "0";
-        document.getElementById('form-lock').style.pointerEvents = "none";
-        document.getElementById('form-lock').style.transform = "translateY(-10px)";
-        document.getElementById('retry-area').classList.add('hidden');
-      } else {
-        // 不合格 -> やり直しボタン表示
-        document.getElementById('retry-area').classList.remove('hidden');
-        document.getElementById('retry-msg').innerText = "Mission Failed... Try Again!";
-      }
-      validateFinal();
-    }
-
-    function validateFinal() {
-      const c1 = document.getElementById('c1').checked;
-      const c2 = document.getElementById('c2').checked;
-      const btn = document.getElementById('submit-btn');
-      if(c1 && c2 && score >= 2) {
-        btn.classList.remove('btn-disabled');
-      } else {
-        btn.classList.add('btn-disabled');
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', init);
-  </script>
+  <script>lucide.createIcons();</script>
 </body>
 </html>
