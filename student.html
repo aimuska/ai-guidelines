@@ -3,14 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ルールの確認 | AI利用ガイドライン</title>
-  <meta name="description" content="AIを正しく使うための理解度チェックです。合格すると報告フォームに進めます。">
+  <title>学生専用報告ポータル | 生成AI利用ガイドライン</title>
+  <meta name="description" content="東洋美術学校の学生専用ページです。AI利用報告を行うための理解度チェックを行います。">
   
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Quiz",
-    "name": "AI利用ルール確認テスト"
+    "name": "AI利用ルール確認テスト",
+    "learningResourceType": "Assessment"
   }
   </script>
 
@@ -18,97 +19,141 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap');
-    body { font-family: 'Noto Sans JP', sans-serif; background: #fdfdfd; }
+    body { font-family: 'Noto Sans JP', sans-serif; background: #fdfdfd; color: #1a1a1a; }
+    .quiz-card { transition: all 0.3s ease; }
     .answered { pointer-events: none; }
+    .lock-overlay { backdrop-filter: blur(8px); }
   </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen pb-24">
 
-  <nav class="p-6 border-b border-gray-100 bg-white/80 backdrop-blur-md">
+  <nav class="p-6 border-b border-gray-100 bg-white/80 backdrop-blur-md sticky top-0 z-50">
     <div class="max-w-2xl mx-auto flex justify-between items-center">
-      <a href="index.html" class="font-black text-blue-600">AIガイドライン</a>
-      <a href="index.html" class="text-[10px] font-bold text-gray-400 uppercase">戻る</a>
+      <a href="index.html" id="btn-back-to-home" class="font-black text-blue-600 flex items-center gap-2 hover:opacity-70 transition-opacity">
+        <i data-lucide="arrow-left" size="16"></i> ガイドラインへ戻る
+      </a>
+      <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest bg-gray-50 px-3 py-1 rounded-full border border-gray-100">Student Only</span>
     </div>
   </nav>
 
-  <main class="max-w-2xl mx-auto px-6 py-10">
-    <header id="quiz-header" class="text-center mb-12">
-      <h1 class="text-3xl font-black mb-4">理解度チェック</h1>
-      <p class="text-gray-500 text-sm">3問中2問以上正解で報告が可能になります。</p>
+  <main class="max-w-2xl mx-auto px-6 py-12">
+    <header id="quiz-header" class="text-center mb-16">
+      <h1 class="text-3xl font-black mb-4 tracking-tight">理解度チェック</h1>
+      <p class="text-slate-500 text-sm font-medium leading-relaxed">
+        学生の皆さんは、報告フォームに進む前に<br>
+        3問中2問以上の正解でルールを再確認してください。
+      </p>
     </header>
 
-    <div id="quiz-stack" class="space-y-6"></div>
+    <div id="quiz-stack-container" class="space-y-6">
+      </div>
 
-    <section id="retry-area" class="mt-8 text-center hidden">
-      <p class="text-red-500 font-bold mb-4">もう一度挑戦してください</p>
-      <button onclick="initQuiz()" class="px-8 py-4 bg-slate-900 text-white rounded-full font-bold text-xs">RETRY</button>
+    <section id="quiz-retry-area" class="mt-12 text-center hidden">
+      <p class="text-red-500 font-bold mb-4 italic">もう一度ルールを確認して挑戦してください</p>
+      <button onclick="initQuizSession()" id="btn-retry-action" class="px-10 py-4 bg-slate-900 text-white rounded-full font-bold text-xs flex items-center gap-2 mx-auto hover:bg-blue-600 transition-all shadow-xl">
+        <i data-lucide="refresh-cw" size="14"></i> クイズをやり直す
+      </button>
     </section>
 
-    <section id="status-board" class="mt-10 p-6 bg-white border rounded-2xl text-center">
-      <div id="status-badge" class="inline-block px-4 py-1 bg-red-100 text-red-600 text-[10px] font-bold rounded-full mb-4 uppercase">Locked</div>
+    <section id="quiz-status-board" class="mt-12 p-8 bg-white border border-gray-100 rounded-3xl shadow-sm text-center">
+      <div id="status-indicator" class="inline-block px-5 py-1.5 bg-red-100 text-red-600 text-[10px] font-black rounded-full mb-6 uppercase tracking-widest">Locked</div>
       <div class="flex justify-center items-baseline gap-2">
-        <span id="score-display" class="text-4xl font-black">0</span><span class="text-gray-300">/ 2 正解</span>
+        <span id="score-counter" class="text-5xl font-black tracking-tighter">0</span>
+        <span class="text-gray-300 font-bold text-lg">/ 2 正解で解除</span>
       </div>
     </section>
 
-    <section id="form-area" class="mt-10 opacity-30 grayscale pointer-events-none transition-all">
-      <div class="bg-slate-900 text-white p-8 rounded-2xl text-center">
-        <h2 class="text-xl font-black mb-6">報告フォームを開く</h2>
-        <a href="https://docs.google.com/forms/..." class="block w-full py-4 bg-blue-600 rounded-xl font-bold">フォームへ進む</a>
+    <section id="report-form-unlock-area" class="mt-16 opacity-30 grayscale pointer-events-none transition-all duration-700">
+      <div class="bg-slate-900 text-white p-10 md:p-14 rounded-[2.5rem] text-center shadow-2xl shadow-slate-900/20">
+        <div class="mb-8 flex justify-center">
+          <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center">
+            <i data-lucide="send" size="32"></i>
+          </div>
+        </div>
+        <h2 class="text-2xl font-black mb-6">報告フォームを開く</h2>
+        <p class="text-slate-400 text-sm mb-10 leading-relaxed">ガイドラインを遵守し、自身の創作活動にAIを正しく活用することを誓約して報告を行います。</p>
+        <a href="https://docs.google.com/forms/d/e/..." id="final-form-link" target="_blank" class="block w-full py-5 bg-blue-600 rounded-2xl font-black text-lg shadow-xl hover:bg-blue-500 transition-all active:scale-95">
+          Googleフォームへ進む
+        </a>
       </div>
     </section>
   </main>
 
   <script>
-    const quizPool = [
-      { q: "Level 0の設定では、AIツールを使ってもよい？", a: ["使ってはいけない", "少しならよい", "講師に黙っていればよい"], c: 0 },
-      { q: "AIが作ったものをそのまま提出できるのはどのレベル？", a: ["Level 0", "Level 1", "どのレベルも原則不可（加工が必要）"], c: 2 },
-      { q: "他者の画風をそっくりに真似るプロンプトは？", a: ["推奨される", "倫理的リスクがあるため避けるべき", "積極的に使うべき"], c: 1 },
-      { q: "AIを利用した際、報告は必要？", a: ["必要", "不要", "どっちでもいい"], c: 0 },
-      { q: "AIが生成した内容に誤りがあった時の責任は？", a: ["AIの開発元", "自分自身", "学校"], c: 1 }
-      // ... 必要に応じて25問まで追加可能
+    const questionDatabase = [
+      { q: "Level 0の授業で、こっそりAIを使うのはOK？", a: ["ダメ。基礎を学ぶため一切禁止", "少しならバレないのでOK", "AIに聞くのはOK"], c: 0 },
+      { q: "AIが作った絵をそのまま自分の作品として出せるレベルは？", a: ["Level 2", "Level 3", "どのレベルも原則不可（加工が必要）"], c: 2 },
+      { q: "特定の作家さんの絵をそっくりに真似る指示（プロンプト）は？", a: ["推奨される", "倫理的に避けるべき", "積極的に練習すべき"], c: 1 },
+      { q: "AIを利用した時、学校への報告は必要？", a: ["必ず必要", "自信があるなら不要", "気が向いたらでいい"], c: 0 },
+      { q: "AIが間違った情報を出した時、責任を負うのは？", a: ["AIを作った会社", "自分自身", "教えてくれた先生"], c: 1 }
     ];
 
-    let score = 0;
-    function initQuiz() {
-      score = 0;
-      document.getElementById('score-display').innerText = "0";
-      document.getElementById('retry-area').classList.add('hidden');
-      const stack = document.getElementById('quiz-stack');
+    let currentScore = 0;
+    let answeredQuestions = 0;
+
+    function initQuizSession() {
+      currentScore = 0;
+      answeredQuestions = 0;
+      document.getElementById('score-counter').innerText = "0";
+      document.getElementById('quiz-retry-area').classList.add('hidden');
+      document.getElementById('status-indicator').innerText = "Locked";
+      document.getElementById('status-indicator').className = "inline-block px-5 py-1.5 bg-red-100 text-red-600 text-[10px] font-black rounded-full mb-6 uppercase tracking-widest";
+      document.getElementById('report-form-unlock-area').classList.add('opacity-30', 'grayscale', 'pointer-events-none');
+      
+      const stack = document.getElementById('quiz-stack-container');
       stack.innerHTML = '';
       
-      const shuffled = quizPool.sort(() => 0.5 - Math.random()).slice(0, 3);
-      shuffled.forEach((data, i) => {
-        const art = document.createElement('article');
-        art.className = "bg-white p-6 border border-gray-100 rounded-xl shadow-sm";
-        art.innerHTML = `<h3 class="font-bold mb-4">Q${i+1}. ${data.q}</h3><div class="grid gap-2">` + 
-          data.a.map((ans, idx) => `<button onclick="check(${i}, ${idx}, ${data.c}, this)" class="text-left p-3 border rounded-lg text-sm hover:bg-blue-50">${ans}</button>`).join('') + `</div>`;
-        stack.appendChild(art);
+      // Select 3 random questions
+      const selected = questionDatabase.sort(() => 0.5 - Math.random()).slice(0, 3);
+      
+      selected.forEach((item, i) => {
+        const article = document.createElement('article');
+        article.className = "quiz-card bg-white p-8 border border-gray-100 rounded-2xl shadow-sm";
+        article.innerHTML = `
+          <h3 class="font-black mb-6 text-slate-800 flex gap-3">
+            <span class="text-blue-600 font-mono">Q${i+1}.</span>
+            <span>${item.q}</span>
+          </h3>
+          <div class="grid gap-3" role="radiogroup">
+            ${item.a.map((choice, idx) => `
+              <button onclick="processAnswer(this, ${idx}, ${item.c})" class="text-left p-4 border-2 border-gray-50 rounded-xl text-sm font-bold hover:bg-blue-50 hover:border-blue-200 transition-all">
+                ${choice}
+              </button>
+            `).join('')}
+          </div>
+        `;
+        stack.appendChild(article);
       });
     }
 
-    function check(qIdx, choice, correct, btn) {
-      const parent = btn.parentElement;
-      parent.classList.add('answered');
-      if(choice === correct) {
-        btn.classList.add('bg-green-100', 'border-green-500');
-        score++;
+    function processAnswer(button, index, correct) {
+      const parentGrid = button.parentElement;
+      if(parentGrid.classList.contains('answered')) return;
+      
+      parentGrid.classList.add('answered');
+      answeredQuestions++;
+      
+      if(index === correct) {
+        button.classList.add('bg-green-50', 'border-green-500', 'text-green-700');
+        currentScore++;
       } else {
-        btn.classList.add('bg-red-100', 'border-red-500');
+        button.classList.add('bg-red-50', 'border-red-500', 'text-red-700');
       }
-      document.getElementById('score-display').innerText = score;
-      if(score >= 2) {
-        document.getElementById('form-area').classList.remove('opacity-30', 'grayscale', 'pointer-events-none');
-        document.getElementById('status-badge').innerText = "Unlocked";
-        document.getElementById('status-badge').className = "inline-block px-4 py-1 bg-green-100 text-green-600 text-[10px] font-bold rounded-full mb-4 uppercase";
+      
+      document.getElementById('score-counter').innerText = currentScore;
+      
+      if(currentScore >= 2) {
+        document.getElementById('report-form-unlock-area').classList.remove('opacity-30', 'grayscale', 'pointer-events-none');
+        document.getElementById('status-indicator').innerText = "Unlocked";
+        document.getElementById('status-indicator').className = "inline-block px-5 py-1.5 bg-green-500 text-white text-[10px] font-black rounded-full mb-6 uppercase tracking-widest";
       }
-      // 全問回答後に2点未満ならリトライ表示
-      if(document.querySelectorAll('.answered').length === 3 && score < 2) {
-        document.getElementById('retry-area').classList.remove('hidden');
+      
+      if(answeredQuestions === 3 && currentScore < 2) {
+        document.getElementById('quiz-retry-area').classList.remove('hidden');
       }
     }
 
-    window.onload = initQuiz;
+    window.onload = initQuizSession;
     lucide.createIcons();
   </script>
 </body>
